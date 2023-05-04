@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Signupuser from "../pages/Signupuser";
-import Homepage from "../pages/Homepage";
-import Userlogin from "../pages/Userlogin";
-import Eventpage from "../pages/Eventpage";
-import Newspage from "../pages/Newspage";
-import Aboutpage from "../pages/Aboutpage";
-import Profilepage from "../pages/Profilepage";
+import Signupuser from "../pages/user/Signupuser";
+import Homepage from "../pages/user/Homepage";
+import Userlogin from "../pages/user/Userlogin";
+import Eventpage from "../pages/user/Eventpage";
+import Newspage from "../pages/user/Newspage";
+import Aboutpage from "../pages/user/Aboutpage";
+import Profilepage from "../pages/user/Profilepage";
 
 //⚡⚡⚡⚡imports⚡⚡⚡⚡
 
@@ -25,7 +25,7 @@ function UserRoutes() {
 
 			<Route path="/about" element={<Aboutpage />} />
 
-			<Route path="accounts" element={<Profilepage />} />
+			<Route path="/accounts" element={<Profilepage />} />
 		</Routes>
 	);
 }

@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/Header/Header";
-import Accounts from "../components/Account/Accounts";
+import Accounts from "../../components/user/Account/Accounts";
+import Header from "../../components/user/Header/Header";
 
 function Profilepage() {
 	return (

@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/Header/Header";
-import UserLogin from "../components/UserLogin/UserLogin";
+import Header from "../../components/user/Header/Header";
+import UserLogin from "../../components/user/UserLogin/UserLogin";
 
 function Userlogin() {
 	return (

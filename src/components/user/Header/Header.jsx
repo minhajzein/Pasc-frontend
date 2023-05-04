@@ -12,7 +12,7 @@ import {
 import Drawercomp from "../Drawer/Drawercomp";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { handleChange } from "../../redux/reducers/tabPath";
+import { handleChange } from "../../../redux/reducers/tabPath";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 

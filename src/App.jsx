@@ -1,4 +1,5 @@
 import "./App.css";
+import AdminRoutes from "./routes/AdminRoutes";
 import UserRoutes from "./routes/UserRoutes";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 
@@ -9,6 +10,8 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/*" element={<UserRoutes />} />
+
+				<Route path="/admin*" element={<AdminRoutes />} />
 			</Routes>
 		</Router>
 	);

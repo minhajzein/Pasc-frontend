@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import verify from "../../firebase/authentication";
-import { signUpUser, signupWithGoogle } from "../../apis/authentication";
+import verify from "../../../firebase/authentication";
+import { signUpUser, signupWithGoogle } from "../../../apis/authentication";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../firebase/config";
+import { auth, googleProvider } from "../../../firebase/config";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 

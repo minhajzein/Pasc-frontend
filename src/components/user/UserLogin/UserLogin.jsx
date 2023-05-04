@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { loginUser, googleLogin } from "../../apis/authentication";
+import { loginUser, googleLogin } from "../../../apis/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { auth, googleProvider } from "../../firebase/config";
+import { auth, googleProvider } from "../../../firebase/config";
 import { signInWithPopup } from "firebase/auth";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
@@ -24,7 +24,7 @@ function UserLogin() {
 			email: Yup.string()
 				.matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email not valid")
 				.email("Invalid email address")
-				.required("mobile number is required"),
+				.required("email is required"),
 			password: Yup.string().required("password is required"),
 		}),
 		onSubmit: async values => {
@@ -109,7 +109,7 @@ function UserLogin() {
 									}  w-full`}
 									type={password ? "password" : "text"}
 									name="password"
-									placeholder="Create Password"
+									placeholder="Enter password"
 									value={formik.values.password}
 									onChange={formik.handleChange}
 								/>

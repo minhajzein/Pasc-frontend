@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/Header/Header";
-import UserSignup from "../components/UserSignup/UserSignup";
+import Header from "../../components/user/Header/Header";
+import UserSignup from "../../components/user/UserSignup/UserSignup";
 
 function Signupuser() {
 	return (
