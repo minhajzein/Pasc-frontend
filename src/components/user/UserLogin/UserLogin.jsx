@@ -76,7 +76,7 @@ function UserLogin() {
 								className={`block ml-3 text-xs sm:text-sm ${
 									formik.errors.email ? "text-red-500" : ""
 								}`}
-								htmlFor="username"
+								htmlFor="email"
 							>
 								{formik.errors.email ? formik.errors.email : "enter your email"}
 							</label>
@@ -96,7 +96,7 @@ function UserLogin() {
 								className={`block ml-3 text-xs sm:text-sm ${
 									formik.errors.password ? "text-red-500" : ""
 								}`}
-								htmlFor="username"
+								htmlFor="password"
 							>
 								{formik.errors.password ? formik.errors.password : "Password"}
 							</label>

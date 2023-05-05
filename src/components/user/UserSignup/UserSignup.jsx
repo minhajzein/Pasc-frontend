@@ -61,6 +61,7 @@ function UserSignup() {
 			try {
 				if (verified) {
 					const response = await signUpUser(values);
+					console.log(response);
 					if (response.success) {
 						Navigate("/");
 					} else {
