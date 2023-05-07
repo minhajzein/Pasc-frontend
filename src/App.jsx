@@ -2,7 +2,6 @@ import "./App.css";
 import AdminRoutes from "./routes/AdminRoutes";
 import UserRoutes from "./routes/UserRoutes";
 import { Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout";
 
 //⚡⚡⚡⚡import⚡⚡⚡⚡
 

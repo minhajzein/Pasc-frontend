@@ -8,7 +8,7 @@ import Newspage from "../pages/user/Newspage";
 import Aboutpage from "../pages/user/Aboutpage";
 import Profilepage from "../pages/user/Profilepage";
 import RequireAuth from "../components/user/RequireAuth/RequireAuth";
-import Layout from "../components/Layout";
+import { Outlet } from "react-router-dom";
 import Public from "../components/user/Public/Public";
 
 //⚡⚡⚡⚡imports⚡⚡⚡⚡
@@ -16,17 +16,14 @@ import Public from "../components/user/Public/Public";
 function UserRoutes() {
 	return (
 		<Routes>
-			<Route path="/" element={<Layout />}>
-				{/* Public routes */}
-
-				<Route path="/" element={<Public />}>
+			<Route element={<Outlet />}>
+				{/*Public routes */}
+				<Route element={<Public />}>
 					<Route path="login" element={<Userlogin />} />
 					<Route path="signup" element={<Signupuser />} />
 				</Route>
-
 				{/* Private routes */}
-
-				<Route path="/" element={<RequireAuth />}>
+				<Route element={<RequireAuth />}>
 					<Route path="/" element={<Homepage />} />
 					<Route path="events" element={<Eventpage />} />
 					<Route path="news" element={<Newspage />} />

@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import AdminLoginpage from "../pages/admin/AdminLoginpage";
-import Layout from "../components/Layout";
+import { Outlet } from "react-router-dom";
 
 function AdminRoutes() {
 	return (
 		<Routes>
-			<Route path="/" element={<Layout />}>
+			<Route element={<Outlet />}>
 				<Route path="login" element={<AdminLoginpage />} />
 			</Route>
 		</Routes>
