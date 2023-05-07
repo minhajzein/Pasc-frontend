@@ -38,7 +38,7 @@ function Login() {
 							<div className="w-full">
 								<label
 									className={`block ml-3 text-xs sm:text-sm ${
-										formik.errors.email ? "text-red-500" : ""
+										formik.errors.email ? "text-red-500 animate-pulse" : ""
 									}`}
 									htmlFor="email"
 								>
@@ -55,7 +55,7 @@ function Login() {
 							<div className="w-full">
 								<label
 									className={`block ml-3 text-xs sm:text-sm ${
-										formik.errors.password ? "text-red-500" : ""
+										formik.errors.password ? "text-red-500 animate-pulse" : ""
 									}`}
 									htmlFor="password"
 								>

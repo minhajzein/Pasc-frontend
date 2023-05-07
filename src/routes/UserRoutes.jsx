@@ -7,25 +7,33 @@ import Eventpage from "../pages/user/Eventpage";
 import Newspage from "../pages/user/Newspage";
 import Aboutpage from "../pages/user/Aboutpage";
 import Profilepage from "../pages/user/Profilepage";
+import RequireAuth from "../components/user/RequireAuth/RequireAuth";
+import Layout from "../components/Layout";
+import Public from "../components/user/Public/Public";
 
 //⚡⚡⚡⚡imports⚡⚡⚡⚡
 
 function UserRoutes() {
 	return (
 		<Routes>
-			<Route path="/" element={<Homepage />} />
+			<Route path="/" element={<Layout />}>
+				{/* Public routes */}
 
-			<Route path="/login" element={<Userlogin />} />
+				<Route path="/" element={<Public />}>
+					<Route path="login" element={<Userlogin />} />
+					<Route path="signup" element={<Signupuser />} />
+				</Route>
 
-			<Route path="/signup" element={<Signupuser />} />
+				{/* Private routes */}
 
-			<Route path="/events" element={<Eventpage />} />
-
-			<Route path="/news" element={<Newspage />} />
-
-			<Route path="/about" element={<Aboutpage />} />
-
-			<Route path="/accounts" element={<Profilepage />} />
+				<Route path="/" element={<RequireAuth />}>
+					<Route path="/" element={<Homepage />} />
+					<Route path="events" element={<Eventpage />} />
+					<Route path="news" element={<Newspage />} />
+					<Route path="about" element={<Aboutpage />} />
+					<Route path="accounts" element={<Profilepage />} />
+				</Route>
+			</Route>
 		</Routes>
 	);
 }

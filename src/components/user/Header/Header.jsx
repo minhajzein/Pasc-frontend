@@ -12,12 +12,11 @@ import {
 import Drawercomp from "../Drawer/Drawercomp";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { handleChange } from "../../../redux/reducers/tabPath";
+import { handleChange } from "../../../redux/slices/tabPath";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
 function Header() {
-	const [value, setValue] = useState("/");
 	const theme = useTheme();
 	const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 	const tabValue = useSelector(state => state.tabValue.value);
@@ -34,7 +33,6 @@ function Header() {
 
 	const handleOnchange = (e, value) => {
 		dispatch(handleChange(value));
-		setValue(value);
 	};
 
 	return (

@@ -122,6 +122,7 @@ function UserSignup() {
 										: "focus:border-lime-500"
 								}  w-full`}
 								type="text"
+								id="username"
 								name="username"
 								placeholder="Jhon Doe"
 								value={formik.values.username}
@@ -130,6 +131,7 @@ function UserSignup() {
 						</div>
 						<div>
 							<label
+								htmlFor="email"
 								className={`block ml-3 text-xs sm:text-sm ${
 									formik.errors.email ? "text-red-500" : ""
 								}`}
@@ -141,6 +143,7 @@ function UserSignup() {
 									formik.errors.email ? "focus:border-red-500" : "focus:border-lime-500"
 								}  w-full`}
 								type="email"
+								id="email"
 								name="email"
 								placeholder="jhondoe@example.com"
 								value={formik.values.email}
@@ -149,6 +152,7 @@ function UserSignup() {
 						</div>
 						<div>
 							<label
+								htmlFor="mobile"
 								className={`block ml-3 text-xs sm:text-sm ${
 									formik.errors.mobile ? "text-red-500" : ""
 								}`}
@@ -164,6 +168,7 @@ function UserSignup() {
 											: "focus:border-lime-500 w-[70%]"
 									}`}
 									type="text"
+									id="mobile"
 									name="mobile"
 									placeholder="Enter a valid Mobile number"
 									value={formik.values.mobile}
@@ -191,6 +196,7 @@ function UserSignup() {
 						{confirmation && (
 							<div className={`${verified ? "hidden" : ""} duration-300`}>
 								<label
+									htmlFor="otp"
 									className={`block ml-3 text-xs sm:text-sm ${
 										invalid ? "text-red-500" : "text-green-600"
 									}`}
@@ -201,6 +207,7 @@ function UserSignup() {
 									<input
 										className={`placeholder-shown:text-xs sm:placeholder-shown:text-sm text-xs sm:text-sm shadow-md lg:p-2 p-1 w-[70%] rounded-xl border-2 outline-none`}
 										type="text"
+										id="otp"
 										value={OTP}
 										name="otp"
 										onChange={e => setOTP(e.target.value)}
@@ -231,6 +238,7 @@ function UserSignup() {
 						)}
 						<div>
 							<label
+								htmlFor="password"
 								className={`block ml-3 text-xs sm:text-sm ${
 									formik.errors.password ? "text-red-500" : ""
 								}`}
@@ -246,6 +254,7 @@ function UserSignup() {
 									}  w-full`}
 									type={password ? "password" : "text"}
 									name="password"
+									id="password"
 									placeholder="Create Password"
 									value={formik.values.password}
 									onChange={formik.handleChange}
@@ -262,6 +271,7 @@ function UserSignup() {
 						</div>
 						<div>
 							<label
+								htmlFor="confirm"
 								className={`block ml-3 text-xs sm:text-sm ${
 									formik.errors.confirm ? "text-red-500" : ""
 								} `}
@@ -275,6 +285,7 @@ function UserSignup() {
 										: "focus:border-lime-500"
 								}  w-full`}
 								type={password ? "password" : "text"}
+								id="confirm"
 								name="confirm"
 								placeholder="Enter Password again"
 								value={formik.values.confirm}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { loginUser, googleLogin } from "../../../apis/authentication";
@@ -7,13 +7,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, googleProvider } from "../../../firebase/config";
 import { signInWithPopup } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
 function UserLogin() {
+	const user = useSelector(state => state.user.value);
+
 	const [password, setPassword] = useState(true);
 
 	const Navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const formik = useFormik({
 		initialValues: {
@@ -167,7 +171,9 @@ function UserLogin() {
 						</svg>
 						Login with Google
 					</button>
-					<p className="mt-5 text-xs border-b py-4">Forgot your password?</p>
+					<p className="mt-5 text-xs border-b py-4 cursor-pointer text-blue-500 hover:text-blue-700">
+						Forgot your password?
+					</p>
 					<div className="flex justify-between mt-4">
 						<p className="text-xs">Don't have an account?..</p>
 						<Link to="/signup">
