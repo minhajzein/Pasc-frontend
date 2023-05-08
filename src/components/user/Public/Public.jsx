@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 function Public() {
-	const user = useSelector(state => state.user.value);
+	const token = useSelector(state => state.auth.token);
 	const location = useLocation();
 
-	return user !== null ? (
+	return token !== null ? (
 		<Navigate to="/" state={{ from: location }} replace />
 	) : (
 		<Outlet />

@@ -8,6 +8,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../../firebase/config";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../../redux/slices/authSlice";
+import { setUserdata } from "../../../redux/slices/userSlice";
+import usePersist from "../../../hooks/usePersist";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
@@ -18,10 +22,11 @@ function UserSignup() {
 	const [invalid, setInvalid] = useState(false);
 	const [verified, setVerified] = useState(false);
 	const [verifyErr, setVerifyErr] = useState(false);
-
+	const [persist, setPersist] = usePersist();
 	//formik & form validations
 
 	const Navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const formik = useFormik({
 		initialValues: {
@@ -63,6 +68,8 @@ function UserSignup() {
 					const response = await signUpUser(values);
 					console.log(response);
 					if (response.success) {
+						dispatch(setCredentials(response.accessToken));
+						dispatch(setUserdata(response.user));
 						Navigate("/");
 					} else {
 						toast.error(response.error_msg, {
@@ -79,11 +86,15 @@ function UserSignup() {
 		},
 	});
 
+	const handleToggle = () => setPersist(prev => !prev);
+
 	const signInWithGoogle = async () => {
 		try {
 			const result = await signInWithPopup(auth, googleProvider);
 			const response = await signupWithGoogle(result.user);
 			if (response.success) {
+				dispatch(setCredentials(response.accessToken));
+				dispatch(setUserdata(response.user));
 				Navigate("/");
 			} else {
 				toast.error(response.error_msg, {
@@ -297,6 +308,18 @@ function UserSignup() {
 								Please verify your mobile number
 							</p>
 						)}
+						<div className="flex flex-row justify-between border-blue-500 rounded-md items-center border p-1 px-4">
+							<input
+								className="bg-cyan-200 rounded-md border-blue-700 border-2"
+								type="checkbox"
+								id="persist"
+								checked={persist}
+								onChange={handleToggle}
+							/>
+							<label className="ml-4 lg:text-sm text-xs" htmlFor="persist">
+								Trust this device
+							</label>
+						</div>
 						<button
 							className="bg-lime-600 p-1 shadow-md rounded-xl lg:p-2 hover:scale-105 duration-300"
 							type="submit"

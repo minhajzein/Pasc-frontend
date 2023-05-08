@@ -1,23 +1,29 @@
 import React, { useState } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { loginUser, googleLogin } from "../../../apis/authentication";
+import { googleLogin } from "../../../apis/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, googleProvider } from "../../../firebase/config";
 import { signInWithPopup } from "firebase/auth";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../../redux/slices/authSlice";
+import { setUserdata } from "../../../redux/slices/userSlice";
+import { useLoginMutation } from "../../../redux/userApiSlices/authApiSlice";
+import usePersist from "../../../hooks/usePersist";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
 function UserLogin() {
-	const user = useSelector(state => state.user.value);
-
 	const [password, setPassword] = useState(true);
 
-	const Navigate = useNavigate();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+	const [persist, setPersist] = usePersist();
+
+	const [login, { isLoading }] = useLoginMutation();
 
 	const formik = useFormik({
 		initialValues: {
@@ -33,11 +39,13 @@ function UserLogin() {
 		}),
 		onSubmit: async values => {
 			try {
-				const response = await loginUser(values);
-				if (response.success) {
-					Navigate("/");
+				const response = await login(values);
+				if (response.data.success) {
+					dispatch(setCredentials(response.data.accessToken));
+					dispatch(setUserdata(response.data.user));
+					navigate("/");
 				} else {
-					toast.error(response.error_msg, {
+					toast.error(response.data.error_msg, {
 						position: "top-center",
 						theme: "colored",
 					});
@@ -53,7 +61,9 @@ function UserLogin() {
 			const result = await signInWithPopup(auth, googleProvider);
 			const response = await googleLogin(result.user);
 			if (response.success) {
-				Navigate("/");
+				dispatch(setCredentials(response.accessToken));
+				dispatch(setUserdata(response.data.user));
+				navigate("/");
 			} else {
 				toast.error(response.error_msg, {
 					position: "top-center",
@@ -65,7 +75,11 @@ function UserLogin() {
 		}
 	};
 
-	return (
+	const handleToggle = () => setPersist(prev => !prev);
+
+	return isLoading ? (
+		<p>Loading</p>
+	) : (
 		<>
 			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
 			<div className="mt-10 p-2 sm:p-7 lg:mt-15 h-auto w-full flex flex-col lg:flex-row lg:justify-around items-center ">
@@ -90,6 +104,7 @@ function UserLogin() {
 								}  w-full`}
 								type="email"
 								name="email"
+								id="email"
 								placeholder="jhondoe@example.com"
 								value={formik.values.email}
 								onChange={formik.handleChange}
@@ -113,6 +128,7 @@ function UserLogin() {
 									}  w-full`}
 									type={password ? "password" : "text"}
 									name="password"
+									id="password"
 									placeholder="Enter password"
 									value={formik.values.password}
 									onChange={formik.handleChange}
@@ -127,7 +143,18 @@ function UserLogin() {
 								></i>
 							</div>
 						</div>
-
+						<div className="flex flex-row justify-between border-blue-500 rounded-md items-center border p-1 px-4">
+							<input
+								className="bg-cyan-200 rounded-md border-blue-700 border-2"
+								type="checkbox"
+								id="persist"
+								checked={persist}
+								onChange={handleToggle}
+							/>
+							<label className="ml-4 lg:text-sm text-xs" htmlFor="persist">
+								Trust this device
+							</label>
+						</div>
 						<button
 							className="bg-lime-600 p-1 shadow-md rounded-xl lg:p-2 hover:scale-105 duration-300"
 							type="submit"
@@ -183,7 +210,7 @@ function UserLogin() {
 						</Link>
 					</div>
 				</div>
-				<div className="  lg:mt-10 sm:mt-7 mt-3 lg:w-[60%] ">
+				<div className="  lg:mt-10 sm:mt-7 mt-3 lg:w-[60%]">
 					<div className="w-full flex rounded-xl h-auto bg-teal-800/70 p-5 shadow-md  items-center justify-center flex-col">
 						<img
 							className="animate-bounce rounded-full w-1/4 shadow-md"
