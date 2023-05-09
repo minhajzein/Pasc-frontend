@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { useRefreshMutation } from "../../../redux/userApiSlices/authApiSlice";
 import usePersist from "../../../hooks/usePersist";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentToken } from "../../../redux/slices/authSlice";
+import { setUserdata } from "../../../redux/slices/userSlice";
+import Loading from "../Loading/Loading";
 
 //⚡⚡⚡⚡⚡ Imports ⚡⚡⚡⚡⚡
 
@@ -12,6 +14,7 @@ const PersistLoginComp = () => {
 	const token = useSelector(selectCurrentToken);
 	const [truePersist, setTruePersist] = useState(false);
 	const effectRan = useRef(false);
+	const dispatch = useDispatch();
 
 	const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] =
 		useRefreshMutation();
@@ -20,7 +23,7 @@ const PersistLoginComp = () => {
 			const verifyRefreshToken = async () => {
 				try {
 					const refreshtoken = await refresh();
-					console.log(refreshtoken + "this is refresh token");
+					dispatch(setUserdata(refreshtoken.data.user));
 					setTruePersist(true);
 				} catch (error) {
 					console.log(error);
@@ -37,10 +40,9 @@ const PersistLoginComp = () => {
 
 	let content;
 	if (!persist) {
-		console.log("no persist");
 		content = <Outlet />;
 	} else if (isLoading) {
-		content = <p>Loading...</p>;
+		content = <Loading />;
 	} else if (isError) {
 		console.log(error);
 	} else if (isSuccess && truePersist) {

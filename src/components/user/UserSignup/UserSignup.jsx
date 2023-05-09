@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import verify from "../../../firebase/authentication";
-import { signUpUser, signupWithGoogle } from "../../../apis/authentication";
 import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +11,11 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../redux/slices/authSlice";
 import { setUserdata } from "../../../redux/slices/userSlice";
 import usePersist from "../../../hooks/usePersist";
+import {
+	useGoogleSignupMutation,
+	useSignupMutation,
+} from "../../../redux/userApiSlices/authApiSlice";
+import Loading from "../Loading/Loading";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
@@ -23,6 +27,9 @@ function UserSignup() {
 	const [verified, setVerified] = useState(false);
 	const [verifyErr, setVerifyErr] = useState(false);
 	const [persist, setPersist] = usePersist();
+	const [signup, { isLoading }] = useSignupMutation;
+	const [signupGoogle, {}] = useGoogleSignupMutation;
+
 	//formik & form validations
 
 	const Navigate = useNavigate();
@@ -65,8 +72,7 @@ function UserSignup() {
 		onSubmit: async values => {
 			try {
 				if (verified) {
-					const response = await signUpUser(values);
-					console.log(response);
+					const response = await signup(values);
 					if (response.success) {
 						dispatch(setCredentials({ accessToken: response.accessToken }));
 						dispatch(setUserdata(response.user));
@@ -91,10 +97,12 @@ function UserSignup() {
 	const signInWithGoogle = async () => {
 		try {
 			const result = await signInWithPopup(auth, googleProvider);
-			const response = await signupWithGoogle(result.user);
-			if (response.success) {
-				dispatch(setCredentials({ accessToken: response.accessToken }));
-				dispatch(setUserdata(response.user));
+
+			const response = await signupGoogle(result.user);
+
+			if (response.data.success) {
+				dispatch(setCredentials({ accessToken: response.data.accessToken }));
+				dispatch(setUserdata(response.data.user));
 				Navigate("/");
 			} else {
 				toast.error(response.error_msg, {
@@ -107,7 +115,9 @@ function UserSignup() {
 		}
 	};
 
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<>
 			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
 			<div className="mt-9 p-3 sm:p-7 lg:p-10 w-full flex flex-col lg:flex-row lg:justify-around items-center ">

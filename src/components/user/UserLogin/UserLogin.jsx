@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { googleLogin } from "../../../apis/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, googleProvider } from "../../../firebase/config";
@@ -10,8 +9,12 @@ import { signInWithPopup } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../redux/slices/authSlice";
 import { setUserdata } from "../../../redux/slices/userSlice";
-import { useLoginMutation } from "../../../redux/userApiSlices/authApiSlice";
+import {
+	useLoginMutation,
+	useGoogleLoginMutation,
+} from "../../../redux/userApiSlices/authApiSlice";
 import usePersist from "../../../hooks/usePersist";
+import Loading from "../Loading/Loading";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
@@ -24,6 +27,7 @@ function UserLogin() {
 	const [persist, setPersist] = usePersist();
 
 	const [login, { isLoading }] = useLoginMutation();
+	const [googleLogin, {}] = useGoogleLoginMutation();
 
 	const formik = useFormik({
 		initialValues: {
@@ -60,8 +64,8 @@ function UserLogin() {
 		try {
 			const result = await signInWithPopup(auth, googleProvider);
 			const response = await googleLogin(result.user);
-			if (response.success) {
-				dispatch(setCredentials({ accessToken: response.accessToken }));
+			if (response.data.success) {
+				dispatch(setCredentials({ accessToken: response.data.accessToken }));
 				dispatch(setUserdata(response.data.user));
 				navigate("/");
 			} else {
@@ -78,7 +82,7 @@ function UserLogin() {
 	const handleToggle = () => setPersist(prev => !prev);
 
 	return isLoading ? (
-		<p>Loading</p>
+		<Loading />
 	) : (
 		<>
 			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
@@ -128,6 +132,7 @@ function UserLogin() {
 									}  w-full`}
 									type={password ? "password" : "text"}
 									name="password"
+									autoComplete="true"
 									id="password"
 									placeholder="Enter password"
 									value={formik.values.password}
