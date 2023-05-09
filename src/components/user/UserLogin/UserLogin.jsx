@@ -41,7 +41,7 @@ function UserLogin() {
 			try {
 				const response = await login(values);
 				if (response.data.success) {
-					dispatch(setCredentials(response.data.accessToken));
+					dispatch(setCredentials({ accessToken: response.data.accessToken }));
 					dispatch(setUserdata(response.data.user));
 					navigate("/");
 				} else {
@@ -61,7 +61,7 @@ function UserLogin() {
 			const result = await signInWithPopup(auth, googleProvider);
 			const response = await googleLogin(result.user);
 			if (response.success) {
-				dispatch(setCredentials(response.accessToken));
+				dispatch(setCredentials({ accessToken: response.accessToken }));
 				dispatch(setUserdata(response.data.user));
 				navigate("/");
 			} else {

@@ -18,11 +18,13 @@ function UserRoutes() {
 		<Routes>
 			<Route element={<Outlet />}>
 				{/*Public routes */}
+
 				<Route element={<Public />}>
 					<Route path="login" element={<Userlogin />} />
 					<Route path="signup" element={<Signupuser />} />
 				</Route>
 				{/* Private routes */}
+
 				<Route element={<RequireAuth />}>
 					<Route path="/" element={<Homepage />} />
 					<Route path="events" element={<Eventpage />} />

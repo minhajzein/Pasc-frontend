@@ -17,8 +17,8 @@ function Drawercomp(props) {
 			<Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
 				<List>
 					{props.pages.map((page, index) => (
-						<Link to={page.link}>
-							<ListItemButton key={index} onClick={() => setOpenDrawer(false)}>
+						<Link key={index} to={page.link}>
+							<ListItemButton onClick={() => setOpenDrawer(false)}>
 								<ListItemIcon>
 									<ListItemText>{page.name}</ListItemText>
 								</ListItemIcon>
