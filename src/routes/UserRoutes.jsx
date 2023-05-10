@@ -30,7 +30,7 @@ function UserRoutes() {
 					<Route path="events" element={<Eventpage />} />
 					<Route path="news" element={<Newspage />} />
 					<Route path="about" element={<Aboutpage />} />
-					<Route path="accounts" element={<Profilepage />} />
+					<Route path="profile" element={<Profilepage />} />
 				</Route>
 			</Route>
 		</Routes>

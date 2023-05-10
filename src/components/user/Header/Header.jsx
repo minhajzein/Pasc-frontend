@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { handleClose } from "../../../redux/slices/closeSlice";
 
@@ -9,10 +9,21 @@ function Header() {
 	const user = useSelector(state => state.user.value);
 	const closed = useSelector(state => state.closed.value);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const location = useLocation();
 
 	const handleClosed = () => {
 		dispatch(handleClose(!closed));
+	};
+
+	const goToProfile = () => {
+		dispatch(handleClose(false));
+		navigate("/profile");
+	};
+
+	const goToHome = () => {
+		dispatch(handleClose(false));
+		navigate("/");
 	};
 
 	const pages = [
@@ -25,6 +36,7 @@ function Header() {
 	return (
 		<div className="w-full p-1 md:p-2	az z-50 h-12 md:h-16 shadow-2xl fixed top-0 bg-gradient-to-r from-black to-teal-900 flex justify-between items-center">
 			<div
+				onClick={goToHome}
 				title="home"
 				className=" cursor-pointer flex justify-center items-center"
 			>
@@ -35,6 +47,7 @@ function Header() {
 				/>
 				<h1 className="text-xl md:text-2xl font-bold text-white">PASC</h1>
 			</div>
+
 			{user ? (
 				<div>
 					<div className="flex flex-row justify-center items-center">
@@ -65,7 +78,12 @@ function Header() {
 						></i>
 						<div
 							title="profile"
-							className="rounded-full w-9 bg-gray-700 h-9 border-2 border-black cursor-pointer"
+							onClick={goToProfile}
+							className={`${
+								location.pathname !== "/profile"
+									? "rounded-full w-9 bg-gray-700 h-9 border-2 border-black cursor-pointer"
+									: "hidden"
+							}`}
 						>
 							<img
 								className="w-full rounded-full"
@@ -76,23 +94,23 @@ function Header() {
 					</div>
 					<div
 						className={`${
-							closed !== true ? "hidden" : ""
-						} w-full absolute md:hidden top-[49px] left-0 duration-400`}
+							closed !== true ? "absolute left-full" : "left-0"
+						} w-full absolute md:hidden top-12 duration-300`}
 					>
 						<ul
-							className={`${closed !== true ? "hidden" : ""}
-						flex flex-col  justify-center items-center  duration-300`}
+							className={`${closed !== true ? "flex-row" : "grid grid-cols-1"}
+						  duration-300 justify-center w-full items-center`}
 						>
 							{pages.map(page => {
 								return (
-									<li key={page.link} className="w-full">
+									<li key={page.link} className="w-full duration-300">
 										<Link to={page.link}>
 											<div
 												onClick={handleClosed}
 												title={page.name}
-												className="w-full flex justify-center hover:scale-95 border-b-2 border-cyan-300 hover:text-gray-400 hover:bg-black py-7 bg-gray-600 duration-300"
+												className="w-full flex justify-center hover:scale-95 border-b-2 border-gray-800 hover:border-cyan-300 hover:text-gray-400 hover:bg-black py-7 bg-gray-600 duration-300"
 											>
-												<h1 className="uppercase font-bold">{page.name}</h1>
+												<h2 className="uppercase text-sm">{page.name}</h2>
 											</div>
 										</Link>
 									</li>
