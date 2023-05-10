@@ -27,8 +27,8 @@ function UserSignup() {
 	const [verified, setVerified] = useState(false);
 	const [verifyErr, setVerifyErr] = useState(false);
 	const [persist, setPersist] = usePersist();
-	const [signup, { isLoading }] = useSignupMutation;
-	const [signupGoogle, {}] = useGoogleSignupMutation;
+	const [signup, { isLoading }] = useSignupMutation();
+	const [signupGoogle, {}] = useGoogleSignupMutation();
 
 	//formik & form validations
 
