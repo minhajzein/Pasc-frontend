@@ -11,8 +11,8 @@ function App() {
 		<Routes>
 			<Route element={<PersistLoginComp />}>
 				<Route path="/*" element={<UserRoutes />} />
-				<Route path="/admin/*" element={<AdminRoutes />} />
 			</Route>
+			<Route path="/admin/*" element={<AdminRoutes />} />
 		</Routes>
 	);
 }

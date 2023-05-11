@@ -87,7 +87,11 @@ function Header() {
 						>
 							<img
 								className="w-full rounded-full"
-								src={user.avatar !== null ? "/src/assets/images/profile_dummy.jpg" : ""}
+								src={
+									user.avatar !== null
+										? user.avatar
+										: "/src/assets/images/profile_dummy.jpg"
+								}
 								alt="profile"
 							/>
 						</div>

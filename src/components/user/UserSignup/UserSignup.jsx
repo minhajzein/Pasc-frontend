@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import verify from "../../../firebase/authentication";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signInWithPopup } from "firebase/auth";
@@ -15,7 +15,6 @@ import {
 	useGoogleSignupMutation,
 	useSignupMutation,
 } from "../../../redux/userApiSlices/authApiSlice";
-import Loading from "../Loading/Loading";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
@@ -27,13 +26,14 @@ function UserSignup() {
 	const [verified, setVerified] = useState(false);
 	const [verifyErr, setVerifyErr] = useState(false);
 	const [persist, setPersist] = usePersist();
-	const [signup, { isLoading }] = useSignupMutation();
+	const [signup, { isLoading, isSuccess }] = useSignupMutation();
 	const [signupGoogle, {}] = useGoogleSignupMutation();
 
 	//formik & form validations
 
-	const Navigate = useNavigate();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const location = useLocation();
 
 	const formik = useFormik({
 		initialValues: {
@@ -76,7 +76,7 @@ function UserSignup() {
 					if (response.success) {
 						dispatch(setCredentials({ accessToken: response.accessToken }));
 						dispatch(setUserdata(response.user));
-						Navigate("/");
+						navigate("/");
 					} else {
 						toast.error(response.error_msg, {
 							position: "top-center",
@@ -103,7 +103,7 @@ function UserSignup() {
 			if (response.data.success) {
 				dispatch(setCredentials({ accessToken: response.data.accessToken }));
 				dispatch(setUserdata(response.data.user));
-				Navigate("/");
+				navigate("/");
 			} else {
 				toast.error(response.error_msg, {
 					position: "top-center",
@@ -115,9 +115,7 @@ function UserSignup() {
 		}
 	};
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<>
 			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
 			<div className="mt-9 p-3 sm:p-7 lg:p-10 w-full flex flex-col lg:flex-row lg:justify-around items-center ">
@@ -275,6 +273,7 @@ function UserSignup() {
 									}  w-full`}
 									type={password ? "password" : "text"}
 									name="password"
+									autoComplete="true"
 									id="password"
 									placeholder="Create Password"
 									value={formik.values.password}
@@ -308,6 +307,7 @@ function UserSignup() {
 								type={password ? "password" : "text"}
 								id="confirm"
 								name="confirm"
+								autoComplete="true"
 								placeholder="Enter Password again"
 								value={formik.values.confirm}
 								onChange={formik.handleChange}

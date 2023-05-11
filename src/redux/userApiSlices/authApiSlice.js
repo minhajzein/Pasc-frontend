@@ -6,6 +6,7 @@ import { logout, setCredentials } from "../slices/authSlice";
 
 
 
+
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation({
@@ -67,12 +68,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 } catch (error) {
                     console.log(error);
                 }
-
             }
         })
-
     })
-
 })
 
 export const {

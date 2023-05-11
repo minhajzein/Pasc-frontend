@@ -44,7 +44,7 @@ const PersistLoginComp = () => {
 	} else if (isLoading) {
 		content = <Loading />;
 	} else if (isError) {
-		console.log(error);
+		content = <Outlet />;
 	} else if (isSuccess && truePersist) {
 		content = <Outlet />;
 	} else if (token && isUninitialized) {

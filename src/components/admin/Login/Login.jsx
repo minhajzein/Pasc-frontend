@@ -65,6 +65,7 @@ function Login() {
 									<input
 										className="w-full shadow-md rounded-xl focus:border-lime-600"
 										type={password ? "password" : "text"}
+										autoComplete="true"
 										value={formik.values.password}
 										name="password"
 										onChange={formik.handleChange}
