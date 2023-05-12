@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const adminAuthSlice = createSlice({
-    name: 'adminAuth',
+    name: 'adminToken',
     initialState: {
-        adminToken: null
+        value: null
     },
     reducers: {
         setAdminCredentials: (state, actions) => {
@@ -21,4 +21,4 @@ export const { setAdminCredentials, adminLogout } = adminAuthSlice.reducer
 
 export default adminAuthSlice.reducer
 
-export const selectCurrentAdminToken = (state => state.adminAuth.adminToken)
+export const selectCurrentAdminToken = (state) => state.adminToken.value

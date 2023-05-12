@@ -5,14 +5,14 @@ import { setAdminCredentials, adminLogout } from "../adminSlices/adminAuthSlice"
 
 export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation({
+        adminLogin: builder.mutation({
             query: credentials => ({
                 url: '/login',
                 method: 'POST',
                 body: { credentials }
             })
         }),
-        adminLogout: builder.mutation({
+        logoutAdmin: builder.mutation({
             query: () => ({
                 url: '/logout',
                 method: 'POST'
@@ -48,4 +48,9 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
 })
 
 
-export const { use } = adminAuthApiSlice
+export const {
+    useAdminLoginMutation,
+    useLogoutAdminMutation,
+    useRefreshMutation,
+    usePrefetch
+} = adminAuthApiSlice

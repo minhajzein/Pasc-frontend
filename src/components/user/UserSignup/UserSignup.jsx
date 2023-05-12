@@ -15,6 +15,7 @@ import {
 	useGoogleSignupMutation,
 	useSignupMutation,
 } from "../../../redux/userApiSlices/authApiSlice";
+import Loading from "../Loading/Loading";
 
 //⚡⚡⚡⚡ imports ⚡⚡⚡⚡
 
@@ -115,7 +116,9 @@ function UserSignup() {
 		}
 	};
 
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<>
 			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
 			<div className="mt-9 p-3 sm:p-7 lg:p-10 w-full flex flex-col lg:flex-row lg:justify-around items-center ">

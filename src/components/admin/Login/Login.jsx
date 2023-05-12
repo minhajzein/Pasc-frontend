@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Loading from "../../user/Loading/Loading.jsx";
+import { useAdminLoginMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice.js";
+import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
 
 function Login() {
 	const [password, setPassword] = useState(true);
+	const [adminLogin, { isLoading }] = useAdminLoginMutation();
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const formik = useFormik({
 		initialValues: {
@@ -20,13 +27,20 @@ function Login() {
 		}),
 		onSubmit: async values => {
 			try {
-				console.log(values);
+				const response = await adminLogin(values);
+				console.log(response);
+				if (response) {
+					dispatch(setAdminCredentials({ adminToken: response.data.adminToken }));
+					navigate("/admin");
+				}
 			} catch (error) {
 				console.log(error);
 			}
 		},
 	});
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<div className="h-screen w-full flex justify-center items-center bg-[url('/src/assets/images/admin-login.jpg')] lg:bg-none">
 			<div className="bg-blue-200 w-[90%] md:w-[50%] h-auto rounded-3xl md:grid md:grid-cols-1 lg:grid-cols-2 p-3 gap-4">
 				<div className="flex items-center justify-center flex-col p-3">
