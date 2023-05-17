@@ -9,14 +9,16 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
             query: credentials => ({
                 url: '/login',
                 method: 'POST',
-                body: { credentials }
-            })
+                body: { ...credentials }
+            }),
+            providesTags: ['Admin-auth']
         }),
-        logoutAdmin: builder.mutation({
+        adminLogout: builder.mutation({
             query: () => ({
                 url: '/logout',
-                method: 'POST'
+                method: 'GET'
             }),
+            invalidatesTags: ['Admin-auth'],
             async onQueryStarted(arg, { dispatch, queryFulFilled }) {
                 try {
                     await queryFulFilled
@@ -29,11 +31,12 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
                 }
             }
         }),
-        refresh: builder.mutation({
+        adminRefresh: builder.mutation({
             query: () => ({
                 url: '/refresh',
                 method: 'GET'
             }),
+            providesTags: ['Admin-auth'],
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled
@@ -44,13 +47,13 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
                 }
             }
         })
-    })
+    }),
 })
 
 
 export const {
     useAdminLoginMutation,
-    useLogoutAdminMutation,
-    useRefreshMutation,
+    useAdminLogoutMutation,
+    useAdminRefreshMutation,
     usePrefetch
 } = adminAuthApiSlice

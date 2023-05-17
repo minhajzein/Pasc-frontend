@@ -15,9 +15,16 @@ export const store = configureStore({
         closed: closeSlice,
         adminToken: adminAuthSlice
     },
-    middleware: getDefaultMiddleware =>
-        getDefaultMiddleware()
-            .concat(apiSlice.middleware),
+    middleware: (getDefaultMiddleware) => {
+        const allMiddleware = [
+            apiSlice.middleware,
+            adminApiSlice.middleware
+        ];
+        serializableCheck: false;
+        return getDefaultMiddleware({ serializableCheck: false }).concat(
+            ...allMiddleware
+        );
+    },
     devTools: true
 })
 

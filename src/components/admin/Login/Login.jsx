@@ -5,14 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Loading from "../../user/Loading/Loading.jsx";
 import { useAdminLoginMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice.js";
+import { ToastContainer, toast } from "react-toastify";
 import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
 
 function Login() {
 	const [password, setPassword] = useState(true);
-	const [adminLogin, { isLoading }] = useAdminLoginMutation();
+	const [adminLogin, { isLoading, isError }] = useAdminLoginMutation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
+	if (isError) {
+		toast.error("Server not responding", {
+			position: "top-center",
+			theme: "colored",
+		});
+	}
 	const formik = useFormik({
 		initialValues: {
 			email: "",
@@ -27,10 +33,9 @@ function Login() {
 		}),
 		onSubmit: async values => {
 			try {
-				const response = await adminLogin(values);
-				console.log(response);
-				if (response) {
-					dispatch(setAdminCredentials({ adminToken: response.data.adminToken }));
+				const { data } = await adminLogin(values);
+				if (data.success) {
+					dispatch(setAdminCredentials(data.adminToken));
 					navigate("/admin");
 				}
 			} catch (error) {
@@ -107,6 +112,7 @@ function Login() {
 				</div>
 				<div className="bg-[url('/src/assets/images/admin-login.jpg')] bg-cover bg-center rounded-2xl hidden lg:block"></div>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 }

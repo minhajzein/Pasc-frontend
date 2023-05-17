@@ -16,12 +16,12 @@ const baseQuery = fetchBaseQuery({
 
 
 const adminReauthQuery = async (args, api, extraOptions) => {
-    const result = await baseQuery(args, api, extraOptions)
+    let result = await baseQuery(args, api, extraOptions)
     if (result?.error?.status === 403) {
         const refreshResult = await baseQuery('/refresh', api, extraOptions)
         if (refreshResult?.data) {
             api.dispatch(setAdminCredentials({ ...refreshResult.data }))
-            result = await adminBaseQuery(args, api, extraOptions)
+            result = await baseQuery(args, api, extraOptions)
         } else {
             if (refreshResult?.error?.status === 403) {
                 refreshResult.error.data.message = 'Your login has expired'
@@ -37,7 +37,8 @@ const adminReauthQuery = async (args, api, extraOptions) => {
 
 
 export const adminApiSlice = createApi({
+    reducerPath: 'adminAuthService',
     baseQuery: adminReauthQuery,
-    tagTypes: ['Admin', 'News', 'Events'],
+    tagTypes: ['Admin-auth', 'Users', 'modify-news', 'modify-events'],
     endpoints: builder => ({})
 })

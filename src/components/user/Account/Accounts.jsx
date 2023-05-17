@@ -1,8 +1,57 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
+import { Dialog } from "primereact/dialog";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import ReactCrop, { PixelCrop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+import { imgPreview } from "../../../utils/imageCrop";
 
 function Accounts() {
 	const user = useSelector(state => state.user.value);
+
+	const [visible, setVisible] = useState(false);
+	const [profile, setProfile] = useState(null);
+
+	const [coverDialog, setCoverDialog] = useState(false);
+	const [cover, setCover] = useState(null);
+	const [result, setResult] = useState(null);
+	const [coverImage, setCoverImage] = useState(
+		"/src/assets/images/cover_photo.JPG"
+	);
+	const coverRef = useRef(null);
+	const coverCanvasRef = useRef(null);
+
+	const [crop, setCrop] = useState({
+		unit: "%",
+		width: 100,
+		height: 100 / 3,
+	});
+
+	const handleVisibility = () => {
+		setVisible(false);
+		setProfile(null);
+	};
+
+	const handleProfileChange = e => {
+		setProfile(URL.createObjectURL(e.target.files[0]));
+	};
+
+	const updateCoverPhoto = async () => {
+		try {
+			const imgURL = await imgPreview(
+				coverRef.current,
+				coverCanvasRef.current,
+				coverImage,
+				1,
+				0
+			);
+			setResult(imgURL);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div className="w-full  h-auto mt-12 md:mt-16 flex flex-col items-center">
 			<div className="bg-gray-400 max-w-4xl lg:rounded-xl shadow-2xl w-full lg:mt-3 lg:p-2">
@@ -13,13 +62,62 @@ function Accounts() {
 							: ` bg-[url(/src/assets/images/temprorarry_cover.png)]`
 					}`}
 				>
-					<p
-						title="Change cover photo"
-						className="text-xs sm:text-sm text-black absolute right-1 top-[2px] cursor-pointer flex"
+					<div className="absolute top-1 right-1">
+						<label className="cursor-pointer" onClick={() => setCoverDialog(true)}>
+							<i className="fa-solid fa-upload m-1"></i>
+						</label>
+					</div>
+					<Dialog
+						className="w-[90%] sm:w-[50%] lg:w-[30%] bg-slate-600"
+						header="Change profile picture"
+						visible={coverDialog}
+						onHide={() => setCoverDialog(false)}
 					>
-						<i className="fa-solid fa-upload m-1"></i>
-						<span className="hidden sm:block">Change Cover Photo</span>
-					</p>
+						<div className="w-95% ms:w-1/2 h-auto flex flex-col justify-center items-center">
+							<label
+								className="uppercase mb-5 text-lg border-2 rounded-xl p-2 font-semibold text-black border-black cursor-pointer hover:text-white hover:bg-black hover:scale-105 duration-300"
+								htmlFor="cover"
+							>
+								Choose image
+							</label>
+							{cover && (
+								<>
+									<ReactCrop
+										aspect={3 / 1}
+										src={cover}
+										onComplete={c => setCoverImage(c)}
+										crop={crop}
+										onChange={setCrop}
+									>
+										<img src={cover} alt="" ref={coverRef} />
+									</ReactCrop>
+									<button
+										onClick={updateCoverPhoto}
+										className="w-1/2 mt-4 uppercase py-1 font-semibold bg-green-500 rounded-2xl hover:scale-105 duration-300 "
+									>
+										Update
+									</button>
+								</>
+							)}
+							<input
+								id="cover"
+								className="hidden"
+								type="file"
+								accept="image/*"
+								onChange={e => setCover(URL.createObjectURL(e.target.files[0]))}
+							/>
+						</div>
+						<canvas
+							className="hidden"
+							ref={coverCanvasRef}
+							style={{
+								border: "1px solid black",
+								objectFit: "contain",
+								width: coverImage.width,
+								height: coverImage.height,
+							}}
+						/>
+					</Dialog>
 				</div>
 				<div className="w-full flex flex-col relative">
 					<div className="w-full flex justify-center items-center py-3">
@@ -49,9 +147,32 @@ function Accounts() {
 						</div>
 					</div>
 					<div className="flex justify-around  pb-5">
-						<p className="sm:mt-9 mt-4 text-xs sm:text-sm text-blue-700 cursor-pointer">
+						<label
+							htmlFor="avatar"
+							onClick={() => setVisible(true)}
+							className="sm:mt-9 mt-4 text-xs sm:text-sm text-blue-700 cursor-pointer"
+						>
 							<i className="fa-solid fa-upload mr-1"></i>Change Photo
-						</p>
+						</label>
+						<input
+							id="avatar"
+							className="hidden"
+							type="file"
+							accept="image/*"
+							onChange={handleProfileChange}
+						/>
+						<Dialog
+							className="w-[90%] sm:w-[50%] bg-slate-600"
+							header="Change profile picture"
+							visible={visible}
+							onHide={handleVisibility}
+						>
+							<div className="w-full flex flex-col justify-center items-center">
+								<button className="w-1/2 mt-4 uppercase py-1 font-semibold bg-green-500 rounded-2xl hover:scale-105 duration-300 ">
+									Update
+								</button>
+							</div>
+						</Dialog>
 						<p className="sm:mt-9 mt-4 text-xs sm:text-smt text-blue-700 cursor-pointer">
 							<i className="fa-solid fa-pen-to-square mr-1"></i>Edit Details
 						</p>
