@@ -12,6 +12,18 @@ function Accounts() {
 
 	const [visible, setVisible] = useState(false);
 	const [profile, setProfile] = useState(null);
+	const profileRef = useRef(null);
+	const profileCanvasRef = useRef(null);
+	const [croppedProfile, setCroppedProfile] = useState(
+		"/src/assets/images/profile_dummy.jpg"
+	);
+	const [profileCrop, setProfileCrop] = useState({
+		unit: "%",
+		x: 50,
+		y: 50,
+		width: 50,
+		height: 50,
+	});
 
 	const [coverDialog, setCoverDialog] = useState(false);
 	const [cover, setCover] = useState(null);
@@ -21,20 +33,25 @@ function Accounts() {
 	);
 	const coverRef = useRef(null);
 	const coverCanvasRef = useRef(null);
-
 	const [crop, setCrop] = useState({
 		unit: "%",
 		width: 100,
 		height: 100 / 3,
 	});
 
-	const handleVisibility = () => {
-		setVisible(false);
-		setProfile(null);
-	};
-
-	const handleProfileChange = e => {
-		setProfile(URL.createObjectURL(e.target.files[0]));
+	const updateProfilePicture = async () => {
+		try {
+			const profileURL = await imgPreview(
+				profileRef.current,
+				profileCanvasRef.current,
+				croppedProfile,
+				1,
+				0
+			);
+			console.log(profileURL);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const updateCoverPhoto = async () => {
@@ -147,31 +164,62 @@ function Accounts() {
 						</div>
 					</div>
 					<div className="flex justify-around  pb-5">
-						<label
-							htmlFor="avatar"
+						<p
 							onClick={() => setVisible(true)}
-							className="sm:mt-9 mt-4 text-xs sm:text-sm text-blue-700 cursor-pointer"
+							className="sm:mt-9 mt-4 text-xs sm:text-smt text-blue-700 cursor-pointer"
 						>
-							<i className="fa-solid fa-upload mr-1"></i>Change Photo
-						</label>
-						<input
-							id="avatar"
-							className="hidden"
-							type="file"
-							accept="image/*"
-							onChange={handleProfileChange}
-						/>
+							<i className="fa-solid fa-upload mr-1"></i>Channge avatar
+						</p>
 						<Dialog
-							className="w-[90%] sm:w-[50%] bg-slate-600"
+							className="w-[90%] sm:w-[50%] lg:w-[30%] bg-slate-600"
 							header="Change profile picture"
 							visible={visible}
-							onHide={handleVisibility}
+							onHide={() => setVisible(false)}
 						>
-							<div className="w-full flex flex-col justify-center items-center">
-								<button className="w-1/2 mt-4 uppercase py-1 font-semibold bg-green-500 rounded-2xl hover:scale-105 duration-300 ">
-									Update
-								</button>
+							<div className="w-95% ms:w-1/2 h-auto flex flex-col justify-center items-center">
+								<label
+									className="uppercase mb-5 text-lg border-2 rounded-xl p-2 font-semibold text-black border-black cursor-pointer hover:text-white hover:bg-black hover:scale-105 duration-300"
+									htmlFor="avatar"
+								>
+									Choose image
+								</label>
+								{profile && (
+									<div className="w-full flex flex-col justify-center items-center">
+										<ReactCrop
+											aspect={1 / 1}
+											src={profile}
+											onComplete={c => setCroppedProfile(c)}
+											crop={profileCrop}
+											onChange={setProfileCrop}
+										>
+											<img src={profile} alt="" ref={profileRef} />
+										</ReactCrop>
+										<button
+											onClick={updateProfilePicture}
+											className="w-1/2 mt-4 uppercase py-1 font-semibold bg-green-500 rounded-2xl hover:scale-105 duration-300 "
+										>
+											Update
+										</button>
+									</div>
+								)}
 							</div>
+							<input
+								id="avatar"
+								className="hidden"
+								type="file"
+								accept="image/*"
+								onChange={e => setProfile(URL.createObjectURL(e.target.files[0]))}
+							/>
+							<canvas
+								className="hidden"
+								style={{
+									border: "1px solid black",
+									objectFit: "contain",
+									width: croppedProfile.width,
+									height: croppedProfile.height,
+								}}
+								ref={profileCanvasRef}
+							/>
 						</Dialog>
 						<p className="sm:mt-9 mt-4 text-xs sm:text-smt text-blue-700 cursor-pointer">
 							<i className="fa-solid fa-pen-to-square mr-1"></i>Edit Details
