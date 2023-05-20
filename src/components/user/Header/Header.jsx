@@ -34,7 +34,7 @@ function Header() {
 	];
 
 	return (
-		<div className="w-full p-1 md:p-2	az z-50 h-12 md:h-16 shadow-2xl fixed top-0 bg-gradient-to-r from-black to-teal-900 flex justify-between items-center">
+		<div className="w-full p-1 md:p-2 z-50 h-12 md:h-16 shadow-2xl fixed top-0 bg-gradient-to-r from-black to-teal-900 flex justify-between items-center">
 			<div
 				onClick={goToHome}
 				title="home"

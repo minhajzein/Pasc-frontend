@@ -6,6 +6,7 @@ import "primereact/resources/primereact.min.css";
 import ReactCrop, { PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { imgPreview } from "../../../utils/imageCrop";
+import { motion as m } from "framer-motion";
 
 function Accounts() {
 	const user = useSelector(state => state.user.value);
@@ -70,7 +71,13 @@ function Accounts() {
 	};
 
 	return (
-		<div className="w-full  h-auto mt-12 md:mt-16 flex flex-col items-center">
+		<m.div
+			initial={{ y: "100%" }}
+			animate={{ y: "0%" }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.3, ease: "easeOut" }}
+			className="w-full h-auto mt-12 md:mt-16 flex flex-col items-center"
+		>
 			<div className="bg-gray-400 max-w-4xl lg:rounded-xl shadow-2xl w-full lg:mt-3 lg:p-2">
 				<div
 					className={`h-32 sm:h-64 lg:rounded-xl shadow-2xl bg-cover bg-center relative${
@@ -254,7 +261,7 @@ function Accounts() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</m.div>
 	);
 }
 
