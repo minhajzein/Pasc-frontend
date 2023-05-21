@@ -8,15 +8,31 @@ const adminNewsApiSlice = adminApiSlice.injectEndpoints({
                 url: '/news',
                 method: 'GET'
             }),
-            providesTags: ['admin-news'],
+            providesTags: ['modify-news'],
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const data = await queryFulfilled
+                    console.log(data);
                     dispatch(setNews(data.news));
                 } catch (error) {
                     console.log(error);
                 }
             }
+        }),
+        createNews: builder.mutation({
+            query: (credential) => ({
+                url: '/addNews',
+                method: 'POST',
+                body: { ...credential }
+            }),
+            providesTags: ['modify-news']
         })
     })
 })
+
+
+export const {
+    useNewsMutation,
+    useCreateNewsMutation,
+    usePrefetch
+} = adminNewsApiSlice
