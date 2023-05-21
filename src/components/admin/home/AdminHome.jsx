@@ -7,8 +7,10 @@ function AdminHome() {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.5 }}
-			className="w-full"
-		></m.div>
+			className="w-full flex justify-center items-center h-screen"
+		>
+			<h1>admin home</h1>
+		</m.div>
 	);
 }
 

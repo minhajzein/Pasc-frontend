@@ -2,9 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './slices/userSlice'
 import authReducer from './slices/authSlice'
 import closeSlice from './slices/closeSlice'
+import adminRighclose from './adminSlices/adminRighclose'
 import adminAuthSlice from './adminSlices/adminAuthSlice'
 import { adminApiSlice } from '../apis/adminApiSlice'
 import { apiSlice } from '../apis/apiSlice'
+import adminNewsSlice from './adminApiSlices/adminNewsSlice'
+
+///⚡⚡⚡⚡⚡⚡ imports ⚡⚡⚡⚡⚡⚡
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +17,9 @@ export const store = configureStore({
         user: userReducer,
         auth: authReducer,
         closed: closeSlice,
-        adminToken: adminAuthSlice
+        adminToken: adminAuthSlice,
+        adminClose: adminRighclose,
+        adminNews: adminNewsSlice
     },
     middleware: (getDefaultMiddleware) => {
         const allMiddleware = [

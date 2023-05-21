@@ -5,6 +5,10 @@ import { Outlet } from "react-router-dom";
 import AdminAuthReq from "../components/admin/AdminAuthreq/AdminAuthReq";
 import AdminHomePage from "../pages/admin/AdminHomePage";
 import AdminPublic from "../components/admin/public/AdminPublic";
+import AdminEventpage from "../pages/admin/AdminEventpage";
+import AdminNewspage from "../pages/admin/AdminNewspage";
+import AdminUserspage from "../pages/admin/AdminUserspage";
+import AdminMemberspage from "../pages/admin/AdminMemberspage";
 
 function AdminRoutes() {
 	return (
@@ -16,6 +20,10 @@ function AdminRoutes() {
 
 				<Route element={<AdminAuthReq />}>
 					<Route path="/" element={<AdminHomePage />} />
+					<Route path="events" element={<AdminEventpage />} />
+					<Route path="news" element={<AdminNewspage />} />
+					<Route path="users" element={<AdminUserspage />} />
+					<Route path="members" element={<AdminMemberspage/>} />
 				</Route>
 			</Route>
 		</Routes>

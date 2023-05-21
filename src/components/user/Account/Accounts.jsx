@@ -74,7 +74,7 @@ function Accounts() {
 		<m.div
 			initial={{ y: "100%" }}
 			animate={{ y: "0%" }}
-			exit={{ opacity: 0 }}
+			exit={{ y: "0%" }}
 			transition={{ duration: 0.3, ease: "easeOut" }}
 			className="w-full h-auto mt-12 md:mt-16 flex flex-col items-center"
 		>
