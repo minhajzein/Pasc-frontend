@@ -1,5 +1,5 @@
 import { adminApiSlice } from "../../apis/adminApiSlice";
-import { setNews } from "./adminNewsSlice";
+import { setAdminCredentials } from "../adminSlices/adminAuthSlice";
 
 const adminNewsApiSlice = adminApiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -11,9 +11,8 @@ const adminNewsApiSlice = adminApiSlice.injectEndpoints({
             providesTags: ['modify-news'],
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
-                    const data = await queryFulfilled
-                    console.log(data);
-                    dispatch(setNews(data.news));
+                    const result = await queryFulfilled
+                    return result.data
                 } catch (error) {
                     console.log(error);
                 }

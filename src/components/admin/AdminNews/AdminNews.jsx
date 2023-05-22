@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion as m, steps } from "framer-motion";
 import { Dialog } from "primereact/dialog";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
-import { useCreateNewsMutation } from "../../../redux/adminApiSlices/adminNewsApiSlice";
+import { useDispatch } from "react-redux";
+import {
+	useCreateNewsMutation,
+	useNewsMutation,
+} from "../../../redux/adminApiSlices/adminNewsApiSlice";
+import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
+import Loading from "../Loading/Loading";
+
+//⚡⚡⚡⚡⚡⚡ imports  ⚡⚡⚡⚡⚡⚡
 
 function AdminNews() {
+	const [news, setNews] = useState(null);
+	console.log(news);
 	const [open, setOpen] = useState(false);
 	const [image64, setImage64] = useState(null);
-	const [createNews, { isLoading }] = useCreateNewsMutation();
+	const [loading, setLoading] = useState(false);
+	const [createNews, { isSuccess }] = useCreateNewsMutation();
+	const [getAllNews, { isLoading }] = useNewsMutation();
+	const dispatch = useDispatch();
 
 	const convertToBase64 = file => {
 		return new Promise((resolve, reject) => {
@@ -50,27 +63,36 @@ function AdminNews() {
 			try {
 				if (image64 !== null) {
 					setOpen(false);
+					setLoading(true);
 					const credentials = {
 						title: values.title,
 						category: values.category,
 						description: values.description,
 						image: image64,
 					};
-					const data = await createNews(credentials);
-					if (data.success) {
+					const result = await createNews(credentials);
+					if (result?.data?.success) {
 						toast.success("News added successfully", {
 							position: "top-center",
 							theme: "colored",
 						});
+						setNews(result?.data?.news);
 						formik.resetForm();
 						setImage64(null);
+						setLoading(false);
 					} else {
+						if (!result?.data?.auth) {
+							toast.error(result.data.error_msg, {
+								position: "top-centered",
+								theme: "colored",
+							});
+							dispatch(setAdminCredentials(null));
+						}
 						toast.error("Creating news failed!", {
 							position: "top-center",
 							theme: "colored",
 						});
 					}
-					console.log(data);
 				} else {
 					toast.error("Please add an image", {
 						position: "top-center",
@@ -83,7 +105,26 @@ function AdminNews() {
 		},
 	});
 
-	return (
+	const allNews = async () => {
+		try {
+			const result = await getAllNews();
+			if (result.data.success) {
+				setNews(result.data.news);
+			} else if (!result.data.auth) {
+				dispatch(setAdminCredentials(null));
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		allNews();
+	}, []);
+
+	return isLoading ? (
+		<Loading />
+	) : (
 		<m.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
@@ -91,9 +132,9 @@ function AdminNews() {
 			exit={{ opacity: 0 }}
 			className="w-full mt-12 md:mt-16"
 		>
-			{isLoading ? (
+			{loading ? (
 				<div className="rounded-full w-16 h-16 bg-gray-500 absolute right-4 bottom-4 md:right-10 md:bottom-10 flex justify-center items-center text-3xl">
-					<i class="fa-solid fa-spinner animate-spin"></i>
+					<i className="fa-solid fa-spinner animate-spin"></i>
 				</div>
 			) : (
 				<div
@@ -104,7 +145,6 @@ function AdminNews() {
 					<div className="rounded-full w-12 h-12 -z-10 bg-cyan-500 absolute right-2 bottom-2 animate-ping"></div>
 				</div>
 			)}
-
 			<Dialog
 				visible={open}
 				onHide={() => setOpen(!open)}
@@ -137,7 +177,7 @@ function AdminNews() {
 								name="category"
 								value={formik.values.category}
 								onChange={formik.handleChange}
-								className="rounded cursor-no-drop"
+								className="rounded cursor-pointer"
 							>
 								<option className="bg-black text-white" defaultValue="Anouncement">
 									Anouncement

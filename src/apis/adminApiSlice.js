@@ -5,9 +5,9 @@ const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:3009/admin',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-        const adminToken = getState().adminToken.value
+        const adminToken = getState().adminToken.adminToken
         if (adminToken) {
-            headers.set('authorized', `Bearer ${adminToken}`)
+            headers.set('adminauthorized', `Bearer ${adminToken}`)
         }
         return headers
     }

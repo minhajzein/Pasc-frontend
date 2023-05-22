@@ -6,7 +6,6 @@ import adminRighclose from './adminSlices/adminRighclose'
 import adminAuthSlice from './adminSlices/adminAuthSlice'
 import { adminApiSlice } from '../apis/adminApiSlice'
 import { apiSlice } from '../apis/apiSlice'
-import adminNewsSlice from './adminApiSlices/adminNewsSlice'
 
 ///⚡⚡⚡⚡⚡⚡ imports ⚡⚡⚡⚡⚡⚡
 
@@ -18,8 +17,7 @@ export const store = configureStore({
         auth: authReducer,
         closed: closeSlice,
         adminToken: adminAuthSlice,
-        adminClose: adminRighclose,
-        adminNews: adminNewsSlice
+        adminClose: adminRighclose
     },
     middleware: (getDefaultMiddleware) => {
         const allMiddleware = [
