@@ -132,17 +132,57 @@ function AdminNews() {
 			exit={{ opacity: 0 }}
 			className="w-full mt-12 md:mt-16"
 		>
+			<div className="w-full p-2">
+				<table className="w-full bg-slate-300 rounded">
+					<thead className="border-b-2 border-black">
+						<tr>
+							<th className="p-3">Picture</th>
+							<th className="p-3">Title</th>
+							<th className="p-3">Category</th>
+							<th className="p-3">Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						{news &&
+							news.map((obj, i) => {
+								if (i % 2 === 0) {
+									return (
+										<tr className="bg-slate-400">
+											<td className="p-3 cursor-pointer flex justify-center">
+												<img className="w-10 " src={obj.image} alt="" />
+											</td>
+											<td className="p-3 text-center">{obj.title}</td>
+											<td className="p-3 text-center">{obj.category}</td>
+											<td className="p-3 text-center">{obj.createdAt}</td>
+										</tr>
+									);
+								} else {
+									return (
+										<tr>
+											<td className="p-3 cursor-pointer flex justify-center">
+												<img className="w-10 " src={obj.image} alt="" />
+											</td>
+											<td className="p-3 text-center">{obj.title}</td>
+											<td className="p-3 text-center">{obj.category}</td>
+											<td className="p-3 text-center">{obj.createdAt}</td>
+										</tr>
+									);
+								}
+							})}
+					</tbody>
+				</table>
+			</div>
 			{loading ? (
-				<div className="rounded-full w-16 h-16 bg-gray-500 absolute right-4 bottom-4 md:right-10 md:bottom-10 flex justify-center items-center text-3xl">
+				<div className="rounded-full w-16 h-16 bg-gray-500 fixed right-4 bottom-4 md:right-10 md:bottom-10 flex justify-center items-center text-3xl">
 					<i className="fa-solid fa-spinner animate-spin"></i>
 				</div>
 			) : (
 				<div
 					onClick={() => setOpen(!open)}
-					className="rounded-full w-16 h-16 bg-cyan-700 absolute right-4 bottom-4 md:right-10 md:bottom-10 flex justify-center items-center duration-100 text-white text-3xl cursor-pointer"
+					className="rounded-full w-16 h-16 z-20 fixed bg-cyan-700 right-4 bottom-4 md:right-10 md:bottom-10 flex justify-center items-center duration-100 text-white text-3xl cursor-pointer"
 				>
 					<i className="fa-solid fa-plus"></i>
-					<div className="rounded-full w-12 h-12 -z-10 bg-cyan-500 absolute right-2 bottom-2 animate-ping"></div>
+					<div className="rounded-full w-12 h-12 z-10 bg-cyan-500 absolute right-2 bottom-2 animate-ping"></div>
 				</div>
 			)}
 			<Dialog
@@ -179,9 +219,8 @@ function AdminNews() {
 								onChange={formik.handleChange}
 								className="rounded cursor-pointer"
 							>
-								<option className="bg-black text-white" defaultValue="Anouncement">
-									Anouncement
-								</option>
+								<option defaultValue="">--choose category</option>
+								<option value="Anoucement">Anouncement</option>
 								<option value="Decisions">Decisions</option>
 							</select>
 							{formik.errors.category && (

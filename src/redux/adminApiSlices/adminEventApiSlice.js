@@ -1,13 +1,13 @@
 import { adminApiSlice } from "../../apis/adminApiSlice";
 
-const adminNewsApiSlice = adminApiSlice.injectEndpoints({
+const adminEventsApiSlice = adminApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        news: builder.mutation({
+        events: builder.mutation({
             query: () => ({
-                url: '/news',
+                url: '/events',
                 method: 'GET'
             }),
-            providesTags: ['modify-news'],
+            providesTags: ['modify-events'],
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const result = await queryFulfilled
@@ -17,20 +17,20 @@ const adminNewsApiSlice = adminApiSlice.injectEndpoints({
                 }
             }
         }),
-        createNews: builder.mutation({
-            query: (credential) => ({
-                url: '/addNews',
+        addEvent: builder.mutation({
+            query: (credentials) => ({
+                url: '/addEvent',
                 method: 'POST',
-                body: { ...credential }
+                body: { ...credentials }
             }),
-            providesTags: ['modify-news']
+            providesTags: ['modify-events']
         })
     })
 })
 
 
 export const {
-    useNewsMutation,
-    useCreateNewsMutation,
+    useEventsMutation,
+    useAddEventMutation,
     usePrefetch
-} = adminNewsApiSlice
+} = adminEventsApiSlice
