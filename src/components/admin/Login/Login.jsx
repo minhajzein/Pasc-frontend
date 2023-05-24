@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Loading from "../../user/Loading/Loading.jsx";
+import Loading from "../Loading/Loading";
 import { useAdminLoginMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice.js";
 import { ToastContainer, toast } from "react-toastify";
 import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
