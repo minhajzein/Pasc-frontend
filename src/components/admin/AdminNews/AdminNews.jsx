@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion as m, steps } from "framer-motion";
+import { motion as m } from "framer-motion";
 import { Dialog } from "primereact/dialog";
 import { useFormik } from "formik";
 import * as Yup from "yup";

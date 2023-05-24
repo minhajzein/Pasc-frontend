@@ -34,7 +34,7 @@ function Header() {
 	];
 
 	return (
-		<div className="w-full p-1 md:p-2 z-50 h-12 md:h-16 shadow-2xl fixed top-0 bg-gradient-to-r from-black to-teal-900 flex justify-between items-center">
+		<div className="w-full p-1 md:p-2 z-50 h-12 md:h-16 fixed top-0 bg-gradient-to-b  from-black to-transparent flex justify-between items-center">
 			<div
 				onClick={goToHome}
 				title="home"
@@ -45,7 +45,7 @@ function Header() {
 					src="/src/assets/images/pasc_logo.png"
 					alt="logo"
 				/>
-				<h1 className="text-xl md:text-2xl font-bold text-white">PASC</h1>
+				<h1 className="text-xl md:text-2xl font-bold text-cyan-300">PASC</h1>
 			</div>
 
 			{user ? (
@@ -58,8 +58,8 @@ function Header() {
 										<Link
 											className={`${
 												location.pathname === page.link
-													? "text-gray-400 uppercase font-semibold border rounded px-1 mr-5 duration-300 border-cyan-400"
-													: "uppercase mr-5 text-cyan-200 font-semibold hover:text-gray-400 duration-300"
+													? "text-gray-400 uppercase  border-b-2 rounded px-1 mr-10 duration-300 border-gray-300"
+													: "uppercase mr-10 text-slate-200  hover:text-gray-400 duration-300"
 											}`}
 											to={page.link}
 										>
@@ -74,14 +74,14 @@ function Header() {
 							title={closed === true ? "close" : "menu"}
 							className={`${
 								closed !== true ? "fa-solid fa-bars" : "fa-sharp fa-solid fa-xmark"
-							} mr-2 text-2xl md:hidden cursor-pointer`}
+							} mr-2 text-2xl md:hidden cursor-pointer text-cyan-300`}
 						></i>
 						<div
 							title="profile"
 							onClick={goToProfile}
 							className={`${
 								location.pathname !== "/profile"
-									? "rounded-full w-9 bg-gray-700 h-9 border-2 border-black cursor-pointer"
+									? "rounded-full w-10 h-10 bg-gray-700 border-2 border-green-500 cursor-pointer"
 									: "hidden"
 							}`}
 						>
