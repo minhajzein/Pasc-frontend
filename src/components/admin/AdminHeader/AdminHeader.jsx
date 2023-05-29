@@ -53,7 +53,7 @@ function AdminHeader() {
 		logout();
 	};
 	return (
-		<div className="fixed z-10 top-0 w-full h-12 md:h-16 bg-cyan-700 flex justify-between items-center p-2">
+		<div className="fixed z-50 top-0 w-full h-12 md:h-16 bg-cyan-700 flex justify-between items-center p-2">
 			<div
 				onClick={() => navigate("/admin")}
 				className="flex items-center cursor-pointer"
@@ -82,7 +82,7 @@ function AdminHeader() {
 					close ? "-right-full" : "right-3"
 				} duration-300`}
 			>
-				<ul className="w-full">
+				<ul className="w-full z-50">
 					{pages.map(page => {
 						if (page.page !== "logout") {
 							return (
@@ -92,7 +92,7 @@ function AdminHeader() {
 										className={`${
 											location.pathname === page.link
 												? "hidden"
-												: "flex uppercase shadow-2xl shadow-black rounded-lg font-semibold justify-center mt-3 items-center w-full bg-gray-400 p-3 hover:scale-105 hover:bg-black cursor-pointer duration-200 hover:text-white"
+												: "flex uppercase z-50 shadow-2xl shadow-black rounded-lg font-semibold justify-center mt-3 items-center w-full bg-gray-400 p-3 hover:scale-105 hover:bg-black cursor-pointer duration-200 hover:text-white"
 										}`}
 									>
 										{page.logo}

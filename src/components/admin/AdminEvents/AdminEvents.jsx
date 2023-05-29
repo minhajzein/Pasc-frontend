@@ -4,6 +4,7 @@ import { Dialog } from "primereact/dialog";
 import { ToastContainer, toast } from "react-toastify";
 import { useFormik, Field } from "formik";
 import * as Yup from "yup";
+import dayjs from "dayjs";
 import Loading from "../Loading/Loading";
 import {
 	useEventsMutation,
@@ -12,11 +13,15 @@ import {
 import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
 import { useDispatch } from "react-redux";
 
+//======================================= imports ==================================================
+
 function AdminEvents() {
 	const [events, setEvents] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [image64, setImage64] = useState(null);
+	const [unlimited, setUnlimited] = useState(false);
+
 	const [getAllEvents, { isLoading }] = useEventsMutation();
 	const [addEvent, {}] = useAddEventMutation();
 	const [disabled, setDisabled] = useState(false);
@@ -40,11 +45,17 @@ function AdminEvents() {
 		}
 	};
 
+	const minDate = dayjs().add(0, "day").format("YYYY-MM-DD");
+
 	const formik = useFormik({
 		initialValues: {
 			name: "",
+			category: "",
+			limit: "",
 			eventType: "",
 			eventFee: "",
+			startingDate: minDate,
+			endingDate: minDate,
 			description: "",
 		},
 
@@ -54,11 +65,19 @@ function AdminEvents() {
 				.required("name is required")
 				.min(3, "name is very short")
 				.max(40, "name is very long"),
+			category: Yup.string().required("please select a category"),
+			limit: Yup.string().required("please select one"),
 			eventType: Yup.string().required("please choose a type"),
-			eventFee: Yup.number("please enter a number").moreThan(
-				1,
-				"amount cannot be less than 1"
-			),
+			eventFee: Yup.number().moreThan(1, "amount cannot be less than 1"),
+			startingDate: Yup.date()
+				.min(minDate, "minimum date must be today")
+				.required("starting date is required"),
+			endingDate: Yup.date()
+				.min(
+					Yup.ref("startingDate"),
+					"ending date cannot be less than starting date"
+				)
+				.required("ending date is required"),
 			description: Yup.string().required("description is mandatory"),
 		}),
 
@@ -76,8 +95,12 @@ function AdminEvents() {
 					} else {
 						const credentials = {
 							name: values.name,
+							category: values.category,
 							eventType: values.eventType,
+							limit: values.limit,
 							eventFee: values.eventFee === "" ? 0 : Number(values.eventFee),
+							startingDate: values.startingDate,
+							endingDate: values.endingDate,
 							description: values.description,
 							image: image64,
 						};
@@ -130,7 +153,7 @@ function AdminEvents() {
 			console.log(error);
 		}
 	};
-	console.log(events);
+
 	useEffect(() => {
 		allEvents();
 	}, []);
@@ -151,8 +174,10 @@ function AdminEvents() {
 							<th className="p-3">Picture</th>
 							<th className="p-3">Name</th>
 							<th className="p-3">Type</th>
-							<th className="p-3">Charge</th>
-							<th className="p-3">Date</th>
+							<th className="p-3">Reg.fee</th>
+							<th className="p-3">Starting Date</th>
+							<th className="p-3">Ending Date</th>
+							<th className="p-3">Options</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -162,24 +187,50 @@ function AdminEvents() {
 									return (
 										<tr key={i} className="bg-slate-400">
 											<td className="p-3 cursor-pointer flex justify-center">
-												<img className="w-10 " src={obj.image} alt="" />
+												<img className="h-10 " src={obj.image} alt="" />
 											</td>
 											<td className="p-3 text-center">{obj.name}</td>
 											<td className="p-3 text-center">{obj.eventType}</td>
-											<td className="p-3 text-center">{obj.eventFee}</td>
-											<td className="p-3 text-center">{obj.createdAt}</td>
+											<td className="p-3 text-center">
+												{obj.eventFee === 0 ? "Free" : obj.eventFee}
+											</td>
+											<td className="p-3 text-center">{obj.startingDate.slice(0, 10)}</td>
+											<td className="p-3 text-center">{obj.endingDate.slice(0, 10)}</td>
+											<td className="p-3 text-center">
+												<i
+													className="fa-solid fa-pen-to-square mr-2 cursor-pointer hover:scale-105 hover:text-gray-600 duration-300"
+													title="Edit event"
+												></i>
+												<i
+													className="fa-solid fa-trash cursor-pointer hover:scale-105 text-red-700 hover:text-gray-600 duration-300"
+													title="Delete event"
+												></i>
+											</td>
 										</tr>
 									);
 								} else {
 									return (
 										<tr key={i}>
 											<td className="p-3 cursor-pointer flex justify-center">
-												<img className="w-10 " src={obj.image} alt="" />
+												<img className="h-10 " src={obj.image} alt="" />
 											</td>
 											<td className="p-3 text-center">{obj.name}</td>
 											<td className="p-3 text-center">{obj.eventType}</td>
-											<td className="p-3 text-center">{obj.eventFee}</td>
-											<td className="p-3 text-center">{obj.createdAt}</td>
+											<td className="p-3 text-center">
+												{obj.eventFee === 0 ? "Free" : obj.eventFee}
+											</td>
+											<td className="p-3 text-center">{obj.startingDate.slice(0, 10)}</td>
+											<td className="p-3 text-center">{obj.endingDate.slice(0, 10)}</td>
+											<td className="p-3 text-center">
+												<i
+													className="fa-solid fa-pen-to-square mr-2 cursor-pointer hover:scale-105 hover:text-gray-600 duration-300"
+													title="Edit event"
+												></i>
+												<i
+													className="fa-solid fa-trash cursor-pointer hover:scale-105 text-red-700 hover:text-gray-600 duration-300"
+													title="Delete event"
+												></i>
+											</td>
 										</tr>
 									);
 								}
@@ -203,7 +254,7 @@ function AdminEvents() {
 			<Dialog
 				visible={open}
 				onHide={() => setOpen(!open)}
-				header="Create news"
+				header="Create Event"
 				position="right"
 				className="md:w-[50%] w-[95%]"
 			>
@@ -224,6 +275,23 @@ function AdminEvents() {
 							/>
 							{formik.errors.name && (
 								<p className="text-red-600 text-xs">{formik.errors.name}</p>
+							)}
+						</div>
+						<div className="w-full">
+							<label htmlFor="category">Category</label>
+							<select
+								className="w-full rounded"
+								name="category"
+								value={formik.values.category}
+								onChange={formik.handleChange}
+								id="category"
+							>
+								<option defaultValue="">--select category</option>
+								<option value="Anouncement">Anoucement</option>
+								<option value="Decisions">Decisions</option>
+							</select>
+							{formik.errors.category && (
+								<p className="text-red-600 text-xs">{formik.errors.category}</p>
 							)}
 						</div>
 						<div className="flex flex-col">
@@ -257,11 +325,15 @@ function AdminEvents() {
 							{formik.errors.eventType && (
 								<p className="text-red-600 text-xs">{formik.errors.eventType}</p>
 							)}
+						</div>
+						<div className="w-full">
 							<label className="mt-2" htmlFor="eventFee">
 								Event Fee
 							</label>
 							<input
-								className={`rounded ${disabled ? "cursor-not-allowed" : "cursor-text"}`}
+								className={`rounded ${
+									disabled ? "cursor-not-allowed" : "cursor-text"
+								} w-full`}
 								type="number"
 								name="eventFee"
 								disabled={disabled}
@@ -270,6 +342,90 @@ function AdminEvents() {
 							/>
 							{formik.errors.eventFee && (
 								<p className="text-red-600 text-xs">{formik.errors.eventFee}</p>
+							)}
+						</div>
+
+						<div className="w-full">
+							<p>Limitations</p>
+							<div className="flex justify-between items-center px-8 border rounded p-3 border-black">
+								<div className="flex justify-center items-center">
+									<label htmlFor="limited">Limited</label>
+									<input
+										className="ml-2 cursor-pointer"
+										type="radio"
+										id="limited"
+										onClick={() => setUnlimited(false)}
+										onChange={formik.handleChange}
+										value="limited"
+										name="limit"
+									/>
+								</div>
+								<div className="flex justify-center items-center">
+									<label htmlFor="unlimited">Unlimited</label>
+									<input
+										className="ml-2 cursor-pointer"
+										type="radio"
+										onClick={() => setUnlimited(true)}
+										id="unlimited"
+										onChange={formik.handleChange}
+										value="unlimited"
+										name="limit"
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="w-full">
+							<div className="flex justify-between w-full">
+								<div className="w-[45%]">
+									<label htmlFor="playerCount">Count of Players</label>
+									<input
+										id="playerCount"
+										disabled={unlimited}
+										className={`rounded ${
+											unlimited ? "cursor-not-allowed" : "cursor-text"
+										} w-full`}
+										type="number"
+									/>
+								</div>
+								<div className="w-[45%]">
+									<label htmlFor="teamCount">Count of Team</label>
+									<input
+										id="teamCount"
+										disabled={unlimited}
+										className={`rounded ${
+											unlimited ? "cursor-not-allowed" : "cursor-text"
+										} w-full`}
+										type="number"
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="w-full">
+							<label htmlFor="start">Starting date</label>
+							<input
+								name="start"
+								id="date"
+								className="w-full rounded cursor-pointer"
+								value={formik.values.startingDate}
+								onChange={e => formik.setFieldValue("startingDate", e.target.value)}
+								type="date"
+							/>
+							{formik.errors.startingDate && (
+								<p className="text-red-600 text-xs">{formik.errors.startingDate}</p>
+							)}
+						</div>
+						<div className="w-full">
+							<label htmlFor="end">Ending date</label>
+							<input
+								name="end"
+								id="end"
+								className="w-full rounded cursor-pointer"
+								value={formik.values.endingDate}
+								onChange={e => formik.setFieldValue("endingDate", e.target.value)}
+								type="date"
+							/>
+							{formik.errors.endingDate && (
+								<p className="text-red-600 text-xs">{formik.errors.endingDate}</p>
 							)}
 						</div>
 						<div className="flex flex-col">
@@ -314,7 +470,6 @@ function AdminEvents() {
 								<p className="text-red-600 text-xs">{formik.errors.description}</p>
 							)}
 						</div>
-
 						<hr className="border-black" />
 						<hr className="hidden lg:block border-black" />
 						<input

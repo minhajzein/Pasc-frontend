@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const closeSlice = createSlice({
     name: 'closed',
-    initialState: { value: false },
+    initialState: {
+        value: false
+    },
     reducers: {
         handleClose: (state, action) => {
             state.value = action.payload
