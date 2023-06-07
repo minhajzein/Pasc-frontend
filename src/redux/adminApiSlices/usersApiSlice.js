@@ -1,5 +1,5 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
-import { apiSlice } from "../../apis/apiSlice";
+import { adminApiSlice } from "../../apis/adminApiSlice";
 
 
 
@@ -7,30 +7,34 @@ const usersAdapter = createEntityAdapter({})
 
 const initialState = usersAdapter.getInitialState()
 
-export const userApiSlice = apiSlice.injectEndpoints({
-    endpoints: builder => {
-        getUser: builder.query({
+export const userApiSlice = adminApiSlice.injectEndpoints({
+    endpoints: builder => ({
+        getUsers: builder.query({
             query: () => '/users',
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
             },
             keepUnusedDataFor: 5,
-            transformResponse: responseDate => {
-                const loaderUsers = responseDate.map(user => {
+            transformResponse: async (responseData, meta, args) => {
+                const loadedUsers = await responseData.map(user => {
                     user.id = user._id
                     return user
-                })
+                });
+                return usersAdapter.setAll(initialState, loadedUsers)
             },
-            providesTags: (result, error, qrg) => {
+            providesTags: (result, error, arg) => {
+                console.log(result.ids);
                 if (result?.ids) {
                     return [
-                        { type: 'User', id: 'LIST' },
+                        { type: 'Users', id: 'LIST' },
                         ...result.ids.map(id => ({ type: 'User', id }))
                     ]
-                } else return [{ type: 'User', id: "LIST" }]
+                } else return [{
+                    type: 'Users', id: "LIST"
+                }]
             }
         })
-    }
+    })
 })
 
 export const {
@@ -38,12 +42,12 @@ export const {
 } = userApiSlice
 
 
-export const selectUserResult = userApiSlice.endpoints.getUser.select()
+export const selectUsersResult = userApiSlice.endpoints.getUsers.select()
 
 //memoized selector
 
 const selectUsersData = createSelector(
-    selectUserResult,
+    selectUsersResult,
     usersResult => usersResult.data
 )
 

@@ -4,6 +4,7 @@ import authReducer from './slices/authSlice'
 import closeSlice from './slices/closeSlice'
 import adminRighclose from './adminSlices/adminRighclose'
 import adminAuthSlice from './adminSlices/adminAuthSlice'
+import eventSlice from './slices/eventSlice'
 import { adminApiSlice } from '../apis/adminApiSlice'
 import { apiSlice } from '../apis/apiSlice'
 
@@ -15,6 +16,7 @@ export const store = configureStore({
         [adminApiSlice.reducerPath]: adminApiSlice.reducer,
         user: userReducer,
         auth: authReducer,
+        events: eventSlice,
         closed: closeSlice,
         adminToken: adminAuthSlice,
         adminClose: adminRighclose
@@ -24,7 +26,6 @@ export const store = configureStore({
             apiSlice.middleware,
             adminApiSlice.middleware
         ];
-        serializableCheck: false;
         return getDefaultMiddleware({ serializableCheck: false }).concat(
             ...allMiddleware
         );

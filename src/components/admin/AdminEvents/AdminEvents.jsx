@@ -52,6 +52,8 @@ function AdminEvents() {
 			name: "",
 			category: "",
 			limit: "",
+			playersLimit: "",
+			teamLimit: "",
 			eventType: "",
 			eventFee: "",
 			startingDate: minDate,
@@ -148,6 +150,8 @@ function AdminEvents() {
 				setEvents(result?.data?.events);
 			} else if (!result?.data?.auth) {
 				dispatch(setAdminCredentials(null));
+			} else {
+				toast.error("server not responding");
 			}
 		} catch (error) {
 			console.log(error);
@@ -317,7 +321,7 @@ function AdminEvents() {
 										onClick={() => setDisabled(true)}
 										id="free"
 										onChange={formik.handleChange}
-										value="Free"
+										value="free"
 										name="eventType"
 									/>
 								</div>

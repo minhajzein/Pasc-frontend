@@ -23,7 +23,7 @@ const adminEventsApiSlice = adminApiSlice.injectEndpoints({
                 method: 'POST',
                 body: { ...credentials }
             }),
-            providesTags: ['modify-events']
+            invalidatesTags: ['modify-events']
         })
     })
 })

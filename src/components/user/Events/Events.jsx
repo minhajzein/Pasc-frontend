@@ -16,10 +16,6 @@ function Events() {
 	const [getAllEvents, { isLoading }] = useEventsMutation();
 	const [dialogContent, setDialogContent] = useState({});
 
-	const handleSearchChange = e => {
-		setSearchValue(e.target.value);
-	};
-
 	const search = async searchValue => {
 		try {
 		} catch (error) {
@@ -62,7 +58,7 @@ function Events() {
 						className="rounded w-full pr-12 shadow-black shadow-2xl border-2 z-10 border-slate-300"
 						type="search"
 						value={searchValue}
-						onChange={handleSearchChange}
+						onChange={e => setSearchValue(e.target.value)}
 					/>
 
 					<button
@@ -74,12 +70,12 @@ function Events() {
 					</button>
 				</div>
 			</div>
-			<div className="w-full bg-white rounded p-1 grid grid-cols-1 lg:grid-cols-2 gap-2">
+			<div className="w-full rounded p-1 grid grid-cols-1 lg:grid-cols-2 gap-3">
 				{events &&
 					events.map(obj => {
 						return (
 							<>
-								<div className="border-2 h-full p-2 border-black rounded bg-slate-200">
+								<div className="h-full p-2 k rounded bg-slate-200 shadow-md shadow-black">
 									<h1 className="text-center lg:text-xl font-bold">{obj.name}</h1>
 									<div className="grid grid-cols-1 h-[90%] md:grid-cols-2">
 										<div className="flex flex-col justify-between md:p-5">

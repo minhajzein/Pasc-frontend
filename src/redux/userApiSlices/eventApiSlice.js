@@ -1,4 +1,5 @@
 import { apiSlice } from '../../apis/apiSlice'
+import { setEvents } from '../slices/eventSlice'
 
 const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

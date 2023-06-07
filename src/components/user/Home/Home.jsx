@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 
 function Home() {
 	return (
-		<div className="w-full h-screen flex justify-center items-center">
-			<h1 className="text-white text-2xl font-bold animate-pulse">
-				welcome to home 🔥
-			</h1>
-		</div>
+		<>
+			<div className="w-full h-screen absolute -z-10 top-0 bg-cover bg-center left-0 bg-[url('/src/assets/images/home-wallpaper.jpg')]"></div>
+			<div className="w-full mt-12 md:mt-16 flex justify-center items-center"></div>
+		</>
 	);
 }
 
