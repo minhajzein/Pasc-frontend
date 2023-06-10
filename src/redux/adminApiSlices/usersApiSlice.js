@@ -12,10 +12,12 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
         getUsers: builder.query({
             query: () => '/users',
             validateStatus: (response, result) => {
+                console.log(result);
                 return response.status === 200 && !result.isError
             },
             keepUnusedDataFor: 5,
             transformResponse: async (responseData, meta, args) => {
+                console.log(responseData);
                 const loadedUsers = await responseData.map(user => {
                     user.id = user._id
                     return user
@@ -23,7 +25,6 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
                 return usersAdapter.setAll(initialState, loadedUsers)
             },
             providesTags: (result, error, arg) => {
-                console.log(result.ids);
                 if (result?.ids) {
                     return [
                         { type: 'Users', id: 'LIST' },
@@ -33,12 +34,34 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
                     type: 'Users', id: "LIST"
                 }]
             }
+        }),
+        updateRoles: builder.mutation({
+            query: userData => ({
+                url: '/addRoles',
+                method: 'PATCH',
+                body: { userData }
+            }),
+            invalidatesTags: (result, error, id) => [
+                { type: 'User', id: id }
+            ]
+        }),
+        banUnbanUser: builder.mutation({
+            query: userId => ({
+                url: '/changeStatus',
+                method: 'PATCH',
+                body: { userId }
+            }),
+            invalidatesTags: (result, error, id) => [
+                { type: 'User', id: id }
+            ]
         })
     })
 })
 
 export const {
-    useGetUsersQuery
+    useGetUsersQuery,
+    useBanUnbanUserMutation,
+    useUpdateRolesMutation
 } = userApiSlice
 
 
@@ -54,7 +77,7 @@ const selectUsersData = createSelector(
 export const {
     selectAll: selectAllUsers,
     selectById: selectUsersById,
-    selectIds: selectUsersId
+    selectIds: selectUsersIds
 } = usersAdapter.getSelectors(state => selectUsersData(state) ?? initialState)
 
 

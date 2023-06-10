@@ -1,7 +1,8 @@
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useGetUsersQuery } from "../../../redux/adminApiSlices/usersApiSlice";
-import UserPage from "../UserPage/UserPage";
+import UserRow from "./UserRow";
+import Loading from "../Loading/Loading";
 
 //================= imports ===============================================================================================================
 
@@ -16,32 +17,43 @@ function AdminUsers() {
 
 	let content;
 
-	if (isLoading) content = <p>Loding...</p>;
-	if (isError) {
-		toast.error("something went wrong, please try again", {
-			position: "top-center",
-			theme: "colored",
-		});
-	}
+	if (isLoading) content = <Loading />;
+
 	if (isSuccess) {
 		const { ids } = users;
 		const tableContent = ids?.length
-			? ids.map(userId => <UserPage key={userId} userId={userId} />)
+			? ids.map(userId => <UserRow key={userId} userId={userId} />)
 			: null;
 		content = (
-			<table className="">
-				<thead>
-					<tr>
-						<th scope="col">Username</th>
-						<th scope="col">Roles</th>
-						<th scope="col">Actions</th>
-					</tr>
-				</thead>
-				<tbody>{tableContent}</tbody>
-			</table>
+			<div className="w-full p-2">
+				<table className="w-full mt-12 md:mt-16 bg-slate-200 rounded">
+					<thead className="bg-gray-400 border-2 border-black rounded">
+						<tr>
+							<th className="py-5 border-r border-black" scope="col">
+								Profile
+							</th>
+							<th className="py-5 border-r border-black" scope="col">
+								Name
+							</th>
+							<th className="py-5 border-r border-black" scope="col">
+								Roles
+							</th>
+							<th className="py-5" scope="col">
+								Actions
+							</th>
+						</tr>
+					</thead>
+					<tbody>{tableContent}</tbody>
+				</table>
+			</div>
 		);
 	}
-	return content;
+	return (
+		<>
+			{content}
+			<ToastContainer />
+		</>
+	);
 }
 
 export default AdminUsers;
