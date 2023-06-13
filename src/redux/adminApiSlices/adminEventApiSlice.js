@@ -1,14 +1,16 @@
+
 import { adminApiSlice } from "../../apis/adminApiSlice";
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
+
 
 
 const eventsAdapter = createEntityAdapter({})
 
 const initialState = eventsAdapter.getInitialState()
 
-const adminEventsApiSlice = adminApiSlice.injectEndpoints({
+const eventsApiSlice = adminApiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getEvents: builder.query({
+        adminGetEvents: builder.query({
             query: () => '/events',
             validateStatus: (response, result) => {
                 return response.status === 200 && !result.isError
@@ -20,48 +22,56 @@ const adminEventsApiSlice = adminApiSlice.injectEndpoints({
                     return event
                 })
                 return eventsAdapter.setAll(initialState, loadedEvents)
-
             },
             providesTags: (result, error, arg) => {
                 if (result?.ids) {
                     return [
-                        { type: 'Event', id: 'LIST' },
-                        ...result.ids.map(id => ({ type: 'Event', id }))
+                        { type: 'Events', id: 'LIST' },
+                        ...result.ids.map(id => ({ type: 'Events', id }))
                     ]
                 } else return [{
-                    type: 'Event', id: 'LIST'
+                    type: 'Events', id: 'LIST'
                 }]
             }
         }),
-        addEvent: builder.mutation({
+        adminAddEvent: builder.mutation({
             query: (credentials) => ({
                 url: '/addEvent',
                 method: 'POST',
                 body: { ...credentials }
             }),
-            invalidatesTags: ['Event']
+            invalidatesTags: ['Events']
         }),
-        editEvent: builder.mutation({
+        adminEditEvent: builder.mutation({
             query: (credentials) => ({
                 url: '/editEvent',
                 method: 'PATCH',
                 body: { ...credentials }
             }),
-            invalidatesTags: ['Event']
+            invalidatesTags: ['Events']
+        }),
+        adminDeleteEvent: builder.mutation({
+            query: (credentials) => ({
+                url: '/deleteEvent',
+                method: 'DELETE',
+                body: { ...credentials }
+            }),
+            invalidatesTags: ['Events']
         })
     })
 })
 
 
 export const {
-    useGetEventsQuery,
-    useAddEventMutation,
-    useEditEventMutation,
+    useAdminGetEventsQuery,
+    useAdminAddEventMutation,
+    useAdminEditEventMutation,
+    useAdminDeleteEventMutation,
     usePrefetch
-} = adminEventsApiSlice
+} = eventsApiSlice
 
 
-export const selectEventsResult = adminEventsApiSlice.endpoints.getEvents.select()
+export const selectEventsResult = eventsApiSlice.endpoints.adminGetEvents.select()
 
 const selectEventData = createSelector(
     selectEventsResult,

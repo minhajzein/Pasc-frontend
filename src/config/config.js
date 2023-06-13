@@ -3,3 +3,5 @@ export const ROLES = {
     Member: 'Member',
     Executive: 'Executive'
 }
+
+export const baseUrl = 'http://localhost:3009'

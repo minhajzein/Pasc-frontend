@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdminRight } from "../../../redux/adminSlices/adminRighclose";
 import { useAdminLogoutMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice";
+import useAdminPersist from "../../../hooks/useAdminPersist";
 
 const pages = [
 	{
@@ -16,9 +17,9 @@ const pages = [
 		logo: <i className="fa-solid fa-users pr-2"></i>,
 	},
 	{
-		page: "members",
+		page: "requests",
 		link: "/admin/members",
-		logo: <i className="fa-solid fa-user-tag pr-2"></i>,
+		logo: <i className="fa-solid fa-clipboard pr-2"></i>,
 	},
 	{
 		page: "news",
@@ -49,7 +50,7 @@ function AdminHeader() {
 		dispatch(setAdminRight(!close));
 	};
 	const adminLogout = () => {
-		dispatch(setAdminRight(!close));
+		dispatch(setAdminRight(false));
 		logout();
 	};
 	return (
@@ -103,13 +104,19 @@ function AdminHeader() {
 						} else {
 							return (
 								<li key={page.page}>
-									<div
-										onClick={adminLogout}
-										className="flex uppercase shadow-2xl shadow-black rounded-lg font-semibold justify-center mt-3 items-center w-full bg-red-600 p-3 hover:scale-105 hover:bg-red-900 cursor-pointer duration-200 hover:text-white"
-									>
-										{page.logo}
-										{page.page}
-									</div>
+									{isLoading ? (
+										<div className="flex uppercase shadow-2xl shadow-black rounded-lg font-semibold justify-center mt-3 items-center w-full bg-red-600 p-3 hover:scale-105 hover:bg-red-900 cursor-pointer duration-200 hover:text-white">
+											<i className="fa-solid fa-spinner animate-spin"></i>
+										</div>
+									) : (
+										<div
+											onClick={adminLogout}
+											className="flex uppercase shadow-2xl shadow-black rounded-lg font-semibold justify-center mt-3 items-center w-full bg-red-600 p-3 hover:scale-105 hover:bg-red-900 cursor-pointer duration-200 hover:text-white"
+										>
+											{page.logo}
+											{page.page}
+										</div>
+									)}
 								</li>
 							);
 						}

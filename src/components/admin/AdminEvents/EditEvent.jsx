@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import {
 	selectEventById,
-	useEditEventMutation,
+	useAdminEditEventMutation,
 } from "../../../redux/adminApiSlices/adminEventApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog } from "primereact/dialog";
 import { useFormik } from "formik";
-import dayjs from "dayjs";
 import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import moment from "moment";
 
 //================= imports ===============================================================================
@@ -16,15 +15,17 @@ import moment from "moment";
 const EditEvent = ({ eventId }) => {
 	const event = useSelector(state => selectEventById(state, eventId));
 
-	const [editEvent, { isLoading }] = useEditEventMutation();
-
-	const minDate = dayjs().add(0, "day").format("YYYY-MM-DD");
+	const [editEvent, { isLoading }] = useAdminEditEventMutation();
 
 	const [open, setOpen] = useState(false);
 	const [image64, setImage64] = useState(event.image);
-	const [unlimited, setUnlimited] = useState(false);
+	const [unlimited, setUnlimited] = useState(
+		event.limit === "limited" ? false : true
+	);
+	const [disabled, setDisabled] = useState(
+		event.eventType === "Paid" ? false : true
+	);
 
-	const [disabled, setDisabled] = useState(false);
 	const dispatch = useDispatch();
 
 	const convertToBase64 = file => {
@@ -50,12 +51,12 @@ const EditEvent = ({ eventId }) => {
 			name: event.name,
 			category: event.category,
 			limit: event.limit,
-			playersLimit: "",
-			teamLimit: "",
+			playersLimit: event.playersLimit,
+			teamLimit: event.teamLimit,
 			eventType: event.eventType,
 			eventFee: event.eventFee,
-			startingDate: moment(event.startingDate).format("yyyy-MM-dd"),
-			endingDate: moment(event.endingDate).format("yyyy-MM-dd"),
+			startingDate: moment(event.startingDate).format("YYYY-MM-DD"),
+			endingDate: moment(event.endingDate).format("YYYY-MM-DD"),
 			description: event.description,
 		},
 
@@ -67,10 +68,15 @@ const EditEvent = ({ eventId }) => {
 				.max(40, "name is very long"),
 			category: Yup.string().required("please select a category"),
 			limit: Yup.string().required("please select one"),
+			teamLimit: Yup.number(),
+			playersLimit: Yup.number(),
 			eventType: Yup.string().required("please choose a type"),
 			eventFee: Yup.number().moreThan(1, "amount cannot be less than 1"),
 			startingDate: Yup.date()
-				.min(event.startingDate, "minimum date must be today")
+				.min(
+					moment(event.startingDate).format("YYYY-MM-DD"),
+					"date cannot be less current date"
+				)
 				.required("starting date is required"),
 			endingDate: Yup.date()
 				.min(
@@ -92,33 +98,36 @@ const EditEvent = ({ eventId }) => {
 						});
 					} else {
 						const credentials = {
+							id: eventId,
 							name: values.name,
 							category: values.category,
 							eventType: values.eventType,
 							limit: values.limit,
-							eventFee: values.eventFee === "" ? 0 : Number(values.eventFee),
+							playersLimit:
+								values.limit === "limited" ? Number(values.playersLimit) : 0,
+							teamLimit: values.limit === "limited" ? Number(values.teamLimit) : 0,
+							eventFee: values.eventType === "Free" ? 0 : Number(values.eventFee),
 							startingDate: values.startingDate,
 							endingDate: values.endingDate,
 							description: values.description,
 							image: image64,
 						};
-						const result = await addEvent(credentials);
+						const result = await editEvent(credentials);
 						if (result?.data?.success) {
-							toast.success("Event added successfully", {
+							toast.success("Event edited successfully", {
 								position: "top-center",
 								theme: "colored",
 							});
 							formik.resetForm();
-							setImage64(null);
 						} else {
 							if (!result?.data?.auth) {
-								toast.error(result.data.error_msg, {
+								toast.error("Event edtion failed!", {
 									position: "top-centered",
 									theme: "colored",
 								});
 								dispatch(setAdminCredentials(null));
 							}
-							toast.error("Creating news failed!", {
+							toast.error("Event edition failed!", {
 								position: "top-center",
 								theme: "colored",
 							});
@@ -137,15 +146,20 @@ const EditEvent = ({ eventId }) => {
 	});
 	return (
 		<div className="flex justify-center items-center">
-			<i
-				className="fa-solid text-center fa-pen-to-square cursor-pointer hover:scale-105 hover:text-gray-600 duration-300"
-				title="Edit event"
-				onClick={() => setOpen(true)}
-			></i>
+			{isLoading ? (
+				<i className="fa-solid fa-spinner animate-spin"></i>
+			) : (
+				<i
+					className="fa-solid text-center fa-pen-to-square cursor-pointer hover:scale-105 hover:text-gray-600 duration-300"
+					title="Edit event"
+					onClick={() => setOpen(true)}
+				></i>
+			)}
+
 			<Dialog
 				visible={open}
 				onHide={() => setOpen(!open)}
-				header="Create Event"
+				header="Edit Event"
 				position="right"
 				className="md:w-[50%] w-[95%]"
 			>
@@ -178,8 +192,9 @@ const EditEvent = ({ eventId }) => {
 								id="category"
 							>
 								<option defaultValue="">--select category</option>
-								<option value="Anouncement">Anoucement</option>
+								<option value="Anouncement">Anouncement</option>
 								<option value="Decisions">Decisions</option>
+								<option value="Registration">Registration</option>
 							</select>
 							{formik.errors.category && (
 								<p className="text-red-600 text-xs">{formik.errors.category}</p>
@@ -197,6 +212,7 @@ const EditEvent = ({ eventId }) => {
 										onClick={() => setDisabled(false)}
 										onChange={formik.handleChange}
 										value="Paid"
+										checked={formik.values.eventType === "Paid"}
 										name="eventType"
 									/>
 								</div>
@@ -208,6 +224,7 @@ const EditEvent = ({ eventId }) => {
 										onClick={() => setDisabled(true)}
 										id="free"
 										onChange={formik.handleChange}
+										checked={formik.values.eventType === "free"}
 										value="free"
 										name="eventType"
 									/>
@@ -248,6 +265,7 @@ const EditEvent = ({ eventId }) => {
 										onClick={() => setUnlimited(false)}
 										onChange={formik.handleChange}
 										value="limited"
+										checked={formik.values.limit === "limited"}
 										name="limit"
 									/>
 								</div>
@@ -259,6 +277,7 @@ const EditEvent = ({ eventId }) => {
 										onClick={() => setUnlimited(true)}
 										id="unlimited"
 										onChange={formik.handleChange}
+										checked={formik.values.limit === "unlimited"}
 										value="unlimited"
 										name="limit"
 									/>
@@ -276,6 +295,8 @@ const EditEvent = ({ eventId }) => {
 											unlimited ? "cursor-not-allowed" : "cursor-text"
 										} w-full`}
 										type="number"
+										value={formik.values.playersLimit}
+										onChange={e => formik.setFieldValue("playersLimit", e.target.value)}
 									/>
 								</div>
 								<div className="w-[45%]">
@@ -287,6 +308,8 @@ const EditEvent = ({ eventId }) => {
 											unlimited ? "cursor-not-allowed" : "cursor-text"
 										} w-full`}
 										type="number"
+										value={formik.values.teamLimit}
+										onChange={e => formik.setFieldValue("teamLimit", e.target.value)}
 									/>
 								</div>
 							</div>
@@ -373,12 +396,11 @@ const EditEvent = ({ eventId }) => {
 						<input
 							className="p-2 rounded bg-green-600 text-black uppercase cursor-pointer hover:bg-green-900 hover:text-white duration-300"
 							type="submit"
-							value="Add"
+							value="save"
 						/>
 					</form>
 				</div>
 			</Dialog>
-			<ToastContainer />
 		</div>
 	);
 };

@@ -73,13 +73,13 @@ function UserSignup() {
 		onSubmit: async values => {
 			try {
 				if (verified) {
-					const response = await signup(values);
-					if (response.success) {
-						dispatch(setCredentials({ accessToken: response.accessToken }));
-						dispatch(setUserdata(response.user));
+					const { data } = await signup(values);
+					if (data.success) {
+						dispatch(setCredentials({ accessToken: data.accessToken }));
+						dispatch(setUserdata(data.user));
 						navigate("/");
 					} else {
-						toast.error(response.error_msg, {
+						toast.error(data.error_msg, {
 							position: "top-center",
 							theme: "colored",
 						});
@@ -89,6 +89,7 @@ function UserSignup() {
 				}
 			} catch (error) {
 				console.log(error);
+				console.log("error from on submit");
 			}
 		},
 	});

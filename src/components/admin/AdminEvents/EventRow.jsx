@@ -3,6 +3,9 @@ import { useSelector } from "react-redux";
 import { selectEventById } from "../../../redux/adminApiSlices/adminEventApiSlice";
 import EditEvent from "./EditEvent";
 import DeleteEvent from "./DeleteEvent";
+import moment from "moment";
+
+//=========== imports =====================================================================================================================
 
 const EventRow = ({ eventId }) => {
 	const event = useSelector(state => selectEventById(state, eventId));
@@ -18,10 +21,10 @@ const EventRow = ({ eventId }) => {
 					{event.eventFee === 0 ? "Free" : event.eventFee}
 				</td>
 				<td className="p-3 border-r border-black text-center">
-					{event.startingDate.slice(0, 10)}
+					{moment(event.startingDate).format("MMM Do YYYY")}
 				</td>
 				<td className="p-3 border-r border-black text-center">
-					{event.endingDate.slice(0, 10)}
+					{moment(event.endingDate).format("MMM Do YYYY")}
 				</td>
 				<td className="p-3 text-center">
 					<EditEvent eventId={eventId} />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
 import Loading from "../Loading/Loading";
-import { useGetEventsQuery } from "../../../redux/adminApiSlices/adminEventApiSlice";
+import { useAdminGetEventsQuery } from "../../../redux/adminApiSlices/adminEventApiSlice";
 import EventRow from "./EventRow";
 import AddEvent from "./AddEvent";
 
@@ -14,7 +14,7 @@ function AdminEvents() {
 		isSuccess,
 		isError,
 		error,
-	} = useGetEventsQuery();
+	} = useAdminGetEventsQuery();
 
 	let content;
 

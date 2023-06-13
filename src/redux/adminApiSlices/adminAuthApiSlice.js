@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { adminApiSlice } from "../../apis/adminApiSlice";
 import { setAdminCredentials, adminLogout } from "../adminSlices/adminAuthSlice";
 
@@ -24,7 +25,7 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
                     await queryFulFilled
                     dispatch(adminLogout())
                     setTimeout(() => {
-                        dispatch(apiSlice.util.resetApiState())
+                        dispatch(adminApiSlice.util.resetApiState())
                     }, 1000);
                 } catch (error) {
                     console.log(error)
@@ -43,7 +44,7 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
                     const { adminToken } = data
                     dispatch(setAdminCredentials({ adminToken }))
                 } catch (error) {
-                    console.log(error)
+                    console.log(error);
                 }
             }
         })

@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useRefreshMutation } from "../../../redux/userApiSlices/authApiSlice";
 import usePersist from "../../../hooks/usePersist";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentToken } from "../../../redux/slices/authSlice";
+import {
+	selectCurrentToken,
+	setCredentials,
+} from "../../../redux/slices/authSlice";
 import { setUserdata } from "../../../redux/slices/userSlice";
 import Loading from "../Loading/Loading";
+import { toast } from "react-toastify";
 
 //⚡⚡⚡⚡⚡ Imports ⚡⚡⚡⚡⚡
 
@@ -22,9 +26,17 @@ const PersistLoginComp = () => {
 		if (effectRan.current === true || process.env.NODE_ENV !== "development") {
 			const verifyRefreshToken = async () => {
 				try {
-					const refreshtoken = await refresh();
-					dispatch(setUserdata(refreshtoken.data.user));
-					setTruePersist(true);
+					const { data } = await refresh();
+					if (data === undefined) {
+						toast.error("Your login has expired", {
+							position: "top-center",
+							theme: "colored",
+						});
+					} else {
+						dispatch(setUserdata(data?.user));
+						dispatch(setCredentials(data));
+						setTruePersist(true);
+					}
 				} catch (error) {
 					console.log(error);
 				}

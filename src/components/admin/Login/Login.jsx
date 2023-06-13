@@ -4,21 +4,21 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Loading from "../Loading/Loading";
-import { useAdminLoginMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice.js";
+import { useAdminLoginMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
+import useAdminPersist from "../../../hooks/useAdminPersist";
 
 function Login() {
 	const [password, setPassword] = useState(true);
 	const [adminLogin, { isLoading, isError }] = useAdminLoginMutation();
+
+	const [adminPersist, setAdminPersist] = useAdminPersist();
+	const handleToggle = () => setAdminPersist(prev => !prev);
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	if (isError) {
-		toast.error("Server not responding", {
-			position: "top-center",
-			theme: "colored",
-		});
-	}
+
 	const formik = useFormik({
 		initialValues: {
 			email: "",
@@ -34,9 +34,14 @@ function Login() {
 		onSubmit: async values => {
 			try {
 				const { data } = await adminLogin(values);
-				if (data.success) {
+				if (data?.success) {
 					dispatch(setAdminCredentials(data.adminToken));
 					navigate("/admin");
+				} else {
+					toast.error(data?.message, {
+						position: "top-center",
+						theme: "colored",
+					});
 				}
 			} catch (error) {
 				console.log(error);
@@ -98,6 +103,18 @@ function Login() {
 										}
 									></i>
 								</div>
+							</div>
+							<div className="flex flex-row justify-between border-blue-500 rounded-md items-center border p-1 px-4">
+								<input
+									className="bg-cyan-200 rounded-md border-blue-700 border-2"
+									type="checkbox"
+									id="persist"
+									checked={adminPersist}
+									onChange={handleToggle}
+								/>
+								<label className="ml-4 lg:text-sm text-xs" htmlFor="persist">
+									Trust this device
+								</label>
 							</div>
 							<div className="w-full pt-4">
 								<button

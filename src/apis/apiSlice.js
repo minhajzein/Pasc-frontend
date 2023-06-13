@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../redux/slices/authSlice'
-
+import { baseUrl } from '../config/config'
+import { setAdminCredentials } from '../redux/adminSlices/adminAuthSlice'
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:3009',
+    baseUrl: baseUrl,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token
@@ -16,9 +17,10 @@ const baseQuery = fetchBaseQuery({
 })
 
 
-
 const baseQueryWithReauth = async (args, api, extraOptions) => {
+
     let result = await baseQuery(args, api, extraOptions)
+
     if (result?.error?.status === 403) {
         const refreshResult = await baseQuery('/auth/refresh', api, extraOptions)
         if (refreshResult?.data) {
@@ -32,6 +34,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         }
     }
     return result
+
 }
 
 
@@ -39,6 +42,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
     reducerPath: 'userAuthService',
     baseQuery: baseQueryWithReauth,
-    tagTypes: ['User', 'News', 'Events'],
+    tagTypes: ['Admin-auth', 'Users', 'User', 'News', 'Event'],
     endpoints: builder => ({})
 })

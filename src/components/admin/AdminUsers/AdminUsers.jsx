@@ -1,8 +1,8 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
 import { useGetUsersQuery } from "../../../redux/adminApiSlices/usersApiSlice";
 import UserRow from "./UserRow";
 import Loading from "../Loading/Loading";
+import { motion as m } from "framer-motion";
 
 //================= imports ===============================================================================================================
 
@@ -25,7 +25,13 @@ function AdminUsers() {
 			? ids.map(userId => <UserRow key={userId} userId={userId} />)
 			: null;
 		content = (
-			<div className="w-full p-2">
+			<m.div
+				className="w-full p-2"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.5 }}
+				exit={{ opacity: 0 }}
+			>
 				<table className="w-full mt-12 md:mt-16 bg-slate-200 rounded">
 					<thead className="bg-gray-400 border-2 border-black rounded">
 						<tr>
@@ -45,15 +51,10 @@ function AdminUsers() {
 					</thead>
 					<tbody>{tableContent}</tbody>
 				</table>
-			</div>
+			</m.div>
 		);
 	}
-	return (
-		<>
-			{content}
-			<ToastContainer />
-		</>
-	);
+	return content;
 }
 
 export default AdminUsers;

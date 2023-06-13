@@ -7,7 +7,7 @@ function AdminPublic() {
 	const location = useLocation();
 
 	return adminToken !== null ? (
-		<Navigate to="/admin" state={{ from: location }} />
+		<Navigate to="/admin" state={{ from: location }} replace />
 	) : (
 		<Outlet />
 	);

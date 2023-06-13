@@ -17,7 +17,6 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
             },
             keepUnusedDataFor: 5,
             transformResponse: async (responseData, meta, args) => {
-                console.log(responseData);
                 const loadedUsers = await responseData.map(user => {
                     user.id = user._id
                     return user
@@ -28,7 +27,7 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
                 if (result?.ids) {
                     return [
                         { type: 'Users', id: 'LIST' },
-                        ...result.ids.map(id => ({ type: 'User', id }))
+                        ...result.ids.map(id => ({ type: 'Users', id }))
                     ]
                 } else return [{
                     type: 'Users', id: "LIST"
@@ -42,7 +41,7 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
                 body: { userData }
             }),
             invalidatesTags: (result, error, id) => [
-                { type: 'User', id: id }
+                { type: 'Users', id: id }
             ]
         }),
         banUnbanUser: builder.mutation({
@@ -52,7 +51,7 @@ export const userApiSlice = adminApiSlice.injectEndpoints({
                 body: { userId }
             }),
             invalidatesTags: (result, error, id) => [
-                { type: 'User', id: id }
+                { type: 'Users', id: id }
             ]
         })
     })

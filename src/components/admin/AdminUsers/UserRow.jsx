@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
 const UserRow = ({ userId }) => {
 	const user = useSelector(state => selectUsersById(state, userId));
 
-    const [banOrUnban, { isLoading }] = useBanUnbanUserMutation();
-    
+	const [banOrUnban, { isLoading }] = useBanUnbanUserMutation();
+
 	const changeStatus = async () => {
 		try {
 			const result = await banOrUnban(userId);
@@ -59,19 +59,19 @@ const UserRow = ({ userId }) => {
 				</td>
 				<td className="py-2">
 					<button className="p-2 text-xl">
-						<i
-							className={` ${
-								isLoading
-									? "fa-solid fa-spinner animate-spin"
-									: `${
-											user.isBanned
-												? "fa-solid fa-unlock text-green-600"
-												: "fa-sharp fa-solid fa-ban text-red-600"
-									  }`
-							}`}
-							onClick={changeStatus}
-							title={user.isBanned ? "Unban" : "Ban"}
-						></i>
+						{isLoading ? (
+							<i className="fa-solid fa-spinner animate-spin"></i>
+						) : (
+							<i
+								className={`${
+									user.isBanned
+										? "fa-solid fa-unlock text-green-600"
+										: "fa-sharp fa-solid fa-ban text-red-600"
+								}`}
+								onClick={changeStatus}
+								title={user.isBanned ? "Unban" : "Ban"}
+							></i>
+						)}
 					</button>
 				</td>
 			</tr>

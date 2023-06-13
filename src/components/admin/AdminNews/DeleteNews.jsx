@@ -1,13 +1,12 @@
 import React from "react";
-import { useAdminDeleteEventMutation } from "../../../redux/adminApiSlices/adminEventApiSlice";
-import { toast } from "react-toastify";
 import Swal from "sweetalert2/dist/sweetalert2.all";
+import { toast } from "react-toastify";
+import { useDeleteNewsMutation } from "../../../redux/adminApiSlices/adminNewsApiSlice";
 
-//============= imports ===============================================================================================================
+//========= imports ===================================================================================================================
 
-const DeleteEvent = ({ eventId }) => {
-	const [deleteEvent, { isLoading }] = useAdminDeleteEventMutation();
-
+const DeleteNews = ({ newsId }) => {
+	const [deleteNews, { isLoading }] = useDeleteNewsMutation();
 	const handleDelete = async () => {
 		try {
 			Swal.fire({
@@ -20,9 +19,9 @@ const DeleteEvent = ({ eventId }) => {
 				confirmButtonText: "Yes, delete it!",
 			}).then(async result => {
 				if (result.isConfirmed) {
-					const result = await deleteEvent({ eventId });
+					const result = await deleteNews({ newsId });
 					if (result.data.success) {
-						toast.success("Event deleted successfully", {
+						toast.success("News deleted successfully", {
 							position: "top-center",
 							theme: "colored",
 						});
@@ -54,4 +53,4 @@ const DeleteEvent = ({ eventId }) => {
 	);
 };
 
-export default DeleteEvent;
+export default DeleteNews;

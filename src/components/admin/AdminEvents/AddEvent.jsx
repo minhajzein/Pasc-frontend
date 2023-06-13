@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { useAddEventMutation } from "../../../redux/adminApiSlices/adminEventApiSlice";
+import { useAdminAddEventMutation } from "../../../redux/adminApiSlices/adminEventApiSlice";
 import { useFormik } from "formik";
 import { Dialog } from "primereact/dialog";
 import { useDispatch } from "react-redux";
 import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
-import moment from "moment";
+import dayjs from "dayjs";
 
 //============= imports ===============================================================================================================
 
 const AddEvent = () => {
-	const [addEvent, { isLoading, isSuccess }] = useAddEventMutation();
-
-	const minDate = new Date();
+	const [addEvent, { isLoading, isSuccess }] = useAdminAddEventMutation();
 
 	const [open, setOpen] = useState(false);
 	const [image64, setImage64] = useState(null);
@@ -39,6 +37,7 @@ const AddEvent = () => {
 			console.log(error);
 		}
 	};
+	const minDate = dayjs().format("YYYY-MM-DD");
 
 	const formik = useFormik({
 		initialValues: {
@@ -63,6 +62,8 @@ const AddEvent = () => {
 			category: Yup.string().required("please select a category"),
 			limit: Yup.string().required("please select one"),
 			eventType: Yup.string().required("please choose a type"),
+			playersLimit: Yup.number(),
+			teamLimit: Yup.number(),
 			eventFee: Yup.number().moreThan(1, "amount cannot be less than 1"),
 			startingDate: Yup.date()
 				.min(minDate, "minimum date must be today")
@@ -91,7 +92,10 @@ const AddEvent = () => {
 							category: values.category,
 							eventType: values.eventType,
 							limit: values.limit,
-							eventFee: values.eventFee === "" ? 0 : Number(values.eventFee),
+							playersLimit:
+								values.limit === "limited" ? Number(values.playersLimit) : 0,
+							teamLimit: values.limit === "limited" ? Number(values.teamLimit) : 0,
+							eventFee: values.eventType === "free" ? 0 : Number(values.eventFee),
 							startingDate: values.startingDate,
 							endingDate: values.endingDate,
 							description: values.description,
@@ -113,7 +117,7 @@ const AddEvent = () => {
 								});
 								dispatch(setAdminCredentials(null));
 							}
-							toast.error("Creating news failed!", {
+							toast.error("Creating event failed!", {
 								position: "top-center",
 								theme: "colored",
 							});
@@ -182,7 +186,8 @@ const AddEvent = () => {
 								id="category"
 							>
 								<option defaultValue="">--select category</option>
-								<option value="Anouncement">Anoucement</option>
+								<option value="Anouncement">Anouncement</option>
+								<option value="Registration">Registration</option>
 								<option value="Decisions">Decisions</option>
 							</select>
 							{formik.errors.category && (
@@ -280,6 +285,8 @@ const AddEvent = () => {
 											unlimited ? "cursor-not-allowed" : "cursor-text"
 										} w-full`}
 										type="number"
+										value={formik.values.playersLimit}
+										onChange={e => formik.setFieldValue("playersLimit", e.target.value)}
 									/>
 								</div>
 								<div className="w-[45%]">
@@ -291,6 +298,8 @@ const AddEvent = () => {
 											unlimited ? "cursor-not-allowed" : "cursor-text"
 										} w-full`}
 										type="number"
+										value={formik.values.teamLimit}
+										onChange={e => formik.setFieldValue("teamLimit", e.target.value)}
 									/>
 								</div>
 							</div>
@@ -384,7 +393,6 @@ const AddEvent = () => {
 					</form>
 				</div>
 			</Dialog>
-			<ToastContainer />
 		</>
 	);
 };
