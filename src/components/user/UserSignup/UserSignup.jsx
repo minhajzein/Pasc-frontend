@@ -204,7 +204,7 @@ function UserSignup() {
 										}
 										type="button"
 										className={`bg-neutral-700 rounded-lg w-[27%] border-2 hover:bg-white hover:text-black hover:border-black text-xs text-white  duration-300 ${
-											formik.errors.mobile || verified ? "hidden" : ""
+											formik.errors.mobile || verified ? "hidden" : "block"
 										}`}
 									>
 										GET OTP
@@ -215,7 +215,6 @@ function UserSignup() {
 						<div className={`${confirmation ? "hidden" : ""}`}>
 							<div id="recaptcha-container"></div>
 						</div>
-
 						{confirmation && (
 							<div className={`${verified ? "hidden" : ""} duration-300`}>
 								<label

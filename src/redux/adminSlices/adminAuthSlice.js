@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
 const adminAuthSlice = createSlice({
     name: 'adminToken',
     initialState: {
@@ -15,6 +17,8 @@ const adminAuthSlice = createSlice({
     },
 
 })
+
+
 
 export const { setAdminCredentials, adminLogout } = adminAuthSlice.actions
 

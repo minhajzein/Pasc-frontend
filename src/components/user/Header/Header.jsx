@@ -43,7 +43,7 @@ function Header() {
 	];
 
 	return (
-		<div className="flex flex-col  backdrop-blur bg-opacity-50  bg-gradient-to-b fixed top-0 w-full  from-black to-transparent">
+		<div className="flex flex-col z-50 backdrop-blur bg-opacity-50  bg-gradient-to-b fixed top-0 w-full  from-black to-transparent">
 			<div className="w-full p-1 md:p-2 z-50 h-12 md:h-16 flex justify-between items-center">
 				<div
 					onClick={goToHome}
@@ -139,14 +139,16 @@ function Header() {
 			</div>
 			<div
 				className={`${
-					location.pathname === "/" ? "hidden" : "block"
-				} w-full p-2 md:p-3  flex justify-center sticky top-12 md:top-16 items-center`}
+					location.pathname === "/events" || location.pathname === "/news"
+						? "block"
+						: "hidden"
+				} w-full p-1 md:p-3  flex justify-center sticky top-12 md:top-16 items-center`}
 			>
 				<div className="md:w-1/2 w-[95%] relative">
 					<input
 						placeholder="Search here..."
 						name="search"
-						className="rounded w-full pr-12 shadow-black shadow-2xl border-2 z-10 border-slate-300"
+						className="rounded text-xs md:text-lg w-full pr-12 shadow-black shadow-2xl border-2 z-10 border-slate-300"
 						type="search"
 						value={searchValue}
 						onChange={e => setSearchValue(e.target.value)}

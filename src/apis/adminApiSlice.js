@@ -39,6 +39,6 @@ const adminReauthQuery = async (args, api, extraOptions) => {
 export const adminApiSlice = createApi({
     reducerPath: 'adminAuthService',
     baseQuery: adminReauthQuery,
-    tagTypes: ['Admin-auth', 'Users', 'News_cache', 'Events'],
+    tagTypes: ['Admin-auth', 'Users', 'News_cache', 'Events', 'Requests'],
     endpoints: builder => ({})
 })

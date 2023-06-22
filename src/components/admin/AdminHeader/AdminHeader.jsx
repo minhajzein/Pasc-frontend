@@ -18,7 +18,7 @@ const pages = [
 	},
 	{
 		page: "requests",
-		link: "/admin/members",
+		link: "/admin/requests",
 		logo: <i className="fa-solid fa-clipboard pr-2"></i>,
 	},
 	{

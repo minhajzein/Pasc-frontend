@@ -18,7 +18,8 @@ const AdminPersist = () => {
 	const dispatch = useDispatch();
 
 	const [refresh, { isUninitialized, isLoading, isSuccess, isError, error }] =
-		useAdminRefreshMutation();
+        useAdminRefreshMutation();
+    
 	useEffect(() => {
 		if (effectRan.current === true || process.env.NODE_ENV !== "development") {
 			const verifyRefreshToken = async () => {

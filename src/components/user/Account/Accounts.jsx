@@ -7,10 +7,11 @@ import ReactCrop, { PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { imgPreview } from "../../../utils/imageCrop";
 import { motion as m } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 function Accounts() {
 	const user = useSelector(state => state.user.value);
-
+	const navigate = useNavigate();
 	const [visible, setVisible] = useState(false);
 	const [profile, setProfile] = useState(null);
 	const profileRef = useRef(null);
@@ -154,9 +155,12 @@ function Accounts() {
 							}
 							alt=""
 						/>
-						{user.type !== "member" && (
+						{!user.type.includes("member") && (
 							<div>
-								<button className="bg-green-600 mt-16 sm:mt-5 rounded-xl px-2 text-xs sm:text-lg uppercase font-semibold h-[0%] hover:scale-105 duration-300 shadow-lg">
+								<button
+									onClick={() => navigate("/membership")}
+									className="bg-green-600 mt-16 sm:mt-5 rounded-xl px-2 text-xs sm:text-lg uppercase font-semibold h-[0%] hover:scale-105 duration-300 shadow-lg"
+								>
 									+ membership
 								</button>
 							</div>

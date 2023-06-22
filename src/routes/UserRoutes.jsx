@@ -10,6 +10,7 @@ import Profilepage from "../pages/user/Profilepage";
 import RequireAuth from "../components/user/RequireAuth/RequireAuth";
 import { Outlet } from "react-router-dom";
 import Public from "../components/user/Public/Public";
+import ApplicationForm from "../pages/user/ApplicationForm";
 
 //⚡⚡⚡⚡imports⚡⚡⚡⚡
 
@@ -31,6 +32,7 @@ function UserRoutes() {
 					<Route path="news" element={<Newspage />} />
 					<Route path="about" element={<Aboutpage />} />
 					<Route path="profile" element={<Profilepage />} />
+					<Route path="membership" element={<ApplicationForm />} />
 				</Route>
 			</Route>
 		</Routes>

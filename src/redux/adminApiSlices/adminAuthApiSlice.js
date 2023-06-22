@@ -21,15 +21,11 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Admin-auth'],
             async onQueryStarted(arg, { dispatch, queryFulFilled }) {
-                try {
-                    await queryFulFilled
-                    dispatch(adminLogout())
-                    setTimeout(() => {
-                        dispatch(adminApiSlice.util.resetApiState())
-                    }, 1000);
-                } catch (error) {
-                    console.log(error)
-                }
+                await queryFulFilled
+                dispatch(adminLogout())
+                setTimeout(() => {
+                    dispatch(adminApiSlice.util.resetApiState())
+                }, 1000);
             }
         }),
         adminRefresh: builder.mutation({
@@ -39,13 +35,9 @@ export const adminAuthApiSlice = adminApiSlice.injectEndpoints({
             }),
             providesTags: ['Admin-auth'],
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                try {
-                    const { data } = await queryFulfilled
-                    const { adminToken } = data
-                    dispatch(setAdminCredentials({ adminToken }))
-                } catch (error) {
-                    console.log(error);
-                }
+                const { data } = await queryFulfilled
+                const { adminToken } = data
+                dispatch(setAdminCredentials({ adminToken }))
             }
         })
     }),

@@ -285,8 +285,9 @@ const AddEvent = () => {
 											unlimited ? "cursor-not-allowed" : "cursor-text"
 										} w-full`}
 										type="number"
+										name="playersLimit"
 										value={formik.values.playersLimit}
-										onChange={e => formik.setFieldValue("playersLimit", e.target.value)}
+										onChange={formik.handleChange}
 									/>
 								</div>
 								<div className="w-[45%]">
@@ -298,8 +299,9 @@ const AddEvent = () => {
 											unlimited ? "cursor-not-allowed" : "cursor-text"
 										} w-full`}
 										type="number"
+										name="teamLimit"
 										value={formik.values.teamLimit}
-										onChange={e => formik.setFieldValue("teamLimit", e.target.value)}
+										onChange={formik.handleChange}
 									/>
 								</div>
 							</div>
@@ -307,11 +309,11 @@ const AddEvent = () => {
 						<div className="w-full">
 							<label htmlFor="start">Starting date</label>
 							<input
-								name="start"
-								id="date"
+								name="startingDate"
+								id="start"
 								className="w-full rounded cursor-pointer"
 								value={formik.values.startingDate}
-								onChange={e => formik.setFieldValue("startingDate", e.target.value)}
+								onChange={formik.handleChange}
 								type="date"
 							/>
 							{formik.errors.startingDate && (
@@ -321,11 +323,11 @@ const AddEvent = () => {
 						<div className="w-full">
 							<label htmlFor="end">Ending date</label>
 							<input
-								name="end"
+								name="endingDate"
 								id="end"
 								className="w-full rounded cursor-pointer"
 								value={formik.values.endingDate}
-								onChange={e => formik.setFieldValue("endingDate", e.target.value)}
+								onChange={formik.handleChange}
 								type="date"
 							/>
 							{formik.errors.endingDate && (

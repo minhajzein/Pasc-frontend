@@ -9,6 +9,7 @@ import AdminEventpage from "../pages/admin/AdminEventpage";
 import AdminNewspage from "../pages/admin/AdminNewspage";
 import AdminUserspage from "../pages/admin/AdminUserspage";
 import AdminMemberspage from "../pages/admin/AdminMemberspage";
+import RequestsPage from "../pages/admin/RequestsPage";
 
 function AdminRoutes() {
 	return (
@@ -23,7 +24,7 @@ function AdminRoutes() {
 					<Route path="events" element={<AdminEventpage />} />
 					<Route path="news" element={<AdminNewspage />} />
 					<Route path="users" element={<AdminUserspage />} />
-					<Route path="members" element={<AdminMemberspage/>} />
+					<Route path="requests" element={<RequestsPage />} />
 				</Route>
 			</Route>
 		</Routes>

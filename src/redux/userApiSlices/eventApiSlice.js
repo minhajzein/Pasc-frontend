@@ -9,6 +9,7 @@ const initialState = eventsAdapter.getInitialState()
 
 const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+
         getEvents: builder.query({
             query: () => '/events',
             validateStatus: (response, result) => {
@@ -33,29 +34,15 @@ const eventApiSlice = apiSlice.injectEndpoints({
                     type: 'Event', id: 'LIST'
                 }]
             }
-        }),
-        events: builder.mutation({
-            query: () => ({
-                url: '/events',
-                method: 'GET'
-            }),
-            providesTags: ['Events'],
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                try {
-                    const result = await queryFulfilled
-                    return result.data
-                } catch (error) {
-                    console.log(error);
-                }
-            }
         })
+
+
     })
 })
 
 
 
 export const {
-    useEventsMutation,
     usePrefetch,
     useGetEventsQuery
 } = eventApiSlice
