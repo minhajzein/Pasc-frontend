@@ -17,7 +17,7 @@ function Accounts() {
 	const profileRef = useRef(null);
 	const profileCanvasRef = useRef(null);
 	const [croppedProfile, setCroppedProfile] = useState(
-		"/src/assets/images/profile_dummy.jpg"
+		"/images/profile_dummy.jpg"
 	);
 	const [profileCrop, setProfileCrop] = useState({
 		unit: "%",
@@ -30,9 +30,7 @@ function Accounts() {
 	const [coverDialog, setCoverDialog] = useState(false);
 	const [cover, setCover] = useState(null);
 	const [result, setResult] = useState(null);
-	const [coverImage, setCoverImage] = useState(
-		"/src/assets/images/cover_photo.JPG"
-	);
+	const [coverImage, setCoverImage] = useState("/images/cover_photo.JPG");
 	const coverRef = useRef(null);
 	const coverCanvasRef = useRef(null);
 	const [crop, setCrop] = useState({
@@ -84,7 +82,7 @@ function Accounts() {
 					className={`h-32 sm:h-64 lg:rounded-xl shadow-2xl bg-cover bg-center relative${
 						user.coverPhoto !== null
 							? ` bg-[url(${user.coverPhoto})]`
-							: ` bg-[url(/src/assets/images/temprorarry_cover.png)]`
+							: ` bg-[url(/images/temprorarry_cover.png)]`
 					}`}
 				>
 					<div className="absolute top-1 right-1">
@@ -148,14 +146,10 @@ function Accounts() {
 					<div className="w-full flex justify-center items-center py-3">
 						<img
 							className="w-24 h-auto sm:w-36 object-cover object-center rounded-full border-2 sm:left-10 left-1 absolute sm:-top-1/2 border-green-500 -top-12"
-							src={
-								user.avatar !== null
-									? user.avatar
-									: "/src/assets/images/profile_dummy.jpg"
-							}
+							src={user.avatar !== null ? user.avatar : "/images/profile_dummy.jpg"}
 							alt=""
 						/>
-						{!user.type.includes("member") && (
+						{user.type.includes("guest") && (
 							<div>
 								<button
 									onClick={() => navigate("/membership")}
@@ -165,13 +159,35 @@ function Accounts() {
 								</button>
 							</div>
 						)}
-						<div className="absolute right-1 sm:right-10 top-1">
-							<h1 className="text-gray-900 sm:text-3xl uppercase font-bold">
+						{user.type.includes("review") && (
+							<div>
+								<button
+									onClick={() => navigate("/membership")}
+									className="bg-orange-800 mt-16 sm:mt-5 rounded-xl px-3 py-1 text-xs sm:text-lg uppercase font-semibold h-[0%] hover:scale-105 duration-300 shadow-lg"
+								>
+									<i className="fa-solid fa-bars-progress mr-2"></i>
+									track request
+								</button>
+							</div>
+						)}
+						{user.type.includes("paymentPending") && (
+							<div>
+								<button
+									onClick={() => navigate("/membership")}
+									className="bg-blue-500 mt-16 sm:mt-5 rounded-xl px-3 py-1 text-xs sm:text-lg uppercase font-semibold h-[0%] hover:scale-105 duration-300 shadow-lg"
+								>
+									<i className="fa-brands fa-google-pay mr-1"></i>
+									complte payment
+								</button>
+							</div>
+						)}
+						<div className="absolute right-3 md:right-8 top-1">
+							<h1 className="text-gray-900 text-right text-sm sm:text-md md:text-lg lg:text-2xl uppercase font-black">
 								{user.username}
 							</h1>
-							<h2 className="text-cyan-700 sm:text-2xl uppercase text-sm font-semibold">
-								{user.type}
-							</h2>
+							{user.type.includes("member" || "executive") && (
+								<h2 className="text-cyan-700  uppercase font-semibold">{user.type}</h2>
+							)}
 						</div>
 					</div>
 					<div className="flex justify-around  pb-5">

@@ -19,16 +19,17 @@ const PendingPayment = () => {
 				<span className="font-bold">five hundred rupees (500.rs).</span> Please
 				complete your payment.!
 			</p>
-			<div className="hover:scale-105 duration-300 shadow-lg shadow-black mt-10">
+			<div className="hover:scale-105 duration-300 mt-10">
 				<GooglePayButton
 					environment="TEST"
 					buttonSizeMode="fill"
+					buttonType="pay"
 					paymentRequest={{
 						apiVersion: 2,
 						apiVersionMinor: 0,
 						allowedPaymentMethods: [
 							{
-								type: "PAYPAL",
+								type: "CARD",
 								parameters: {
 									allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
 									allowedCardNetworks: ["MASTERCARD", "VISA"],
@@ -36,50 +37,44 @@ const PendingPayment = () => {
 								tokenizationSpecification: {
 									type: "PAYMENT_GATEWAY",
 									parameters: {
-										gateway: "acceptblue",
-										gatewayMerchantId: "9857-5877-2619",
+										gateway: "example",
+										gatewayMerchantId: "BCR2DN4T52CIJWCP",
 									},
 								},
 							},
 						],
 						merchantInfo: {
-							merchantId: "9857-5877-2619",
-							merchantName: "MUHAMMED MINHAJ K",
+							merchantId: "BCR2DN4T52CIJWCP",
+							merchantName: "Demo Merchant",
 						},
 						transactionInfo: {
-							totalPrice: "1.00",
 							totalPriceStatus: "FINAL",
-							totalPriceLabel: "Membership Fee",
-							transactionNote:
-								"payment for PASC(Pandikkadavu Arts & Sports Club) membership",
+							totalPriceLabel: "Total",
+							totalPrice: "500.00",
 							currencyCode: "INR",
 							countryCode: "IN",
 						},
-						shippingAddressRequired: false,
-						callbackIntents: ["PAYMENT_AUTHORIZATION"],
 					}}
 					onLoadPaymentData={paymentRequest => {
-						console.log(paymentRequest);
+						console.log("load payment data", paymentRequest);
 					}}
-					buttonType="pay"
 				/>
 			</div>
-
 			<hr className="mt-7 border border-gray-500 w-full" />
 			<div className="w-full h-10 md:h-16 flex justify-around mt-6">
 				<img
-					className="h-full object-contain hover:scale-105 duration-300 cursor-pointer rounded-full"
-					src="/src/assets/images/google-pay.svg"
+					className="h-full object-contain hover:scale-105 duration-300 cursor-not-allowed rounded-full"
+					src="/images/paypal.png"
 					alt=""
 				/>
 				<img
 					className="h-full object-contain hover:scale-105 duration-300 cursor-not-allowed rounded-full"
-					src="/src/assets/images/download.png"
+					src="/images/download.png"
 					alt=""
 				/>
 				<img
 					className="h-full object-contain hover:scale-105 duration-300 cursor-not-allowed rounded-full"
-					src="/src/assets/images/Paytm.jpg"
+					src="/images/Paytm.jpg"
 					alt=""
 				/>
 			</div>

@@ -158,11 +158,7 @@ const EditNews = ({ newsId }) => {
 							</label>
 							<img
 								className="border object-center border-black h-full mt-1 rounded object-cover"
-								src={
-									image64 !== null
-										? image64
-										: "/src/assets/images/wood-blog-placeholder.jpg"
-								}
+								src={image64 !== null ? image64 : "/images/wood-blog-placeholder.jpg"}
 								alt="Picture"
 							/>
 							{image64 === null && (

@@ -121,7 +121,7 @@ function UserSignup() {
 		<Loading />
 	) : (
 		<>
-			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
+			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
 			<div className="mt-9 p-3 sm:p-7 lg:p-10 w-full flex flex-col lg:flex-row lg:justify-around items-center ">
 				<div className="shadow-md mt-4 lg:mt-10 rounded-xl w-full h-auto lg:w-[30%] bg-slate-300 p-2 sm:p-10 md:p-5 lg:p-3">
 					<h2 className="font-bold lg:text-2xl text-center">Sign Up</h2>
@@ -388,7 +388,7 @@ function UserSignup() {
 				<div className="w-full flex rounded-xl h-auto bg-teal-800 lg:bg-teal-800/70 p-5 shadow-md lg:mt-10 mt-7 lg:w-[60%] items-center justify-center flex-col">
 					<img
 						className="animate-bounce rounded-full w-1/4 shadow-2xl"
-						src="/src/assets/images/pasc_title.jpg"
+						src="/images/pasc_title.jpg"
 						alt=""
 					/>
 					<div className="flex flex-col">

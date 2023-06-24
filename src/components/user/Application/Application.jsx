@@ -34,7 +34,7 @@ const Application = () => {
 					autoPlay
 					loop
 				>
-					<source src="/src/assets/images/background_video.mp4" type="video/mp4" />
+					<source src="/videos/background_video.mp4" type="video/mp4" />
 				</video>
 				{content}
 			</m.div>

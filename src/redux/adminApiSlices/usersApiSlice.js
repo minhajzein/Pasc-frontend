@@ -10,11 +10,12 @@ const initialState = usersAdapter.getInitialState()
 export const userApiSlice = adminApiSlice.injectEndpoints({
     endpoints: builder => ({
         getUsers: builder.query({
-            query: () => '/users',
-            validateStatus: (response, result) => {
-                console.log(result);
-                return response.status === 200 && !result.isError
-            },
+            query: () => ({
+                url: '/users',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError
+                }
+            }),
             keepUnusedDataFor: 5,
             transformResponse: async (responseData, meta, args) => {
                 const loadedUsers = await responseData.map(user => {

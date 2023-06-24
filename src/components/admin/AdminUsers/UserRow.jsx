@@ -41,7 +41,7 @@ const UserRow = ({ userId }) => {
 			<tr className="text-center border border-black">
 				<td className="py-2 flex justify-center items-center border-r border-black">
 					<img
-						src={user.avatar ? user.avatar : "/src/assets/images/profile_dummy.jpg"}
+						src={user.avatar ? user.avatar : "/images/profile_dummy.jpg"}
 						className={`h-12 cursor-pointer rounded-full border-2 ${
 							user.isBanned ? "border-red-600" : "border-green-600"
 						}`}

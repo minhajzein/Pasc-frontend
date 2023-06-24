@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdminRight } from "../../../redux/adminSlices/adminRighclose";
 import { useAdminLogoutMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice";
-import useAdminPersist from "../../../hooks/useAdminPersist";
 
 const pages = [
 	{
@@ -61,7 +60,7 @@ function AdminHeader() {
 			>
 				<img
 					className="w-8 md:w-10 hover:scale-90 duration-300"
-					src="/src/assets/images/pasc_logo.png"
+					src="/images/pasc_logo.png"
 					alt=""
 				/>
 				<h1 className="font-bold text-3xl text-stone-900 hover:text-slate-300 duration-700">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
 	useAddMobileMutation,
+	useCheckMobileMutation,
 	useCreateRequestMutation,
 } from "../../../redux/userApiSlices/applicationApiSlice";
 import { useFormik } from "formik";
@@ -21,8 +22,9 @@ const CreateRequest = ({ user }) => {
 	const [verifyErr, setVerifyErr] = useState(false);
 	const [OTP, setOTP] = useState("");
 
-	const [addMobile, { isLoading: mobLoading }] = useAddMobileMutation();
+	const [addMobile, { isLoading: addingMob }] = useAddMobileMutation();
 	const [createRequest, { isLoading: creatingReq }] = useCreateRequestMutation();
+	const [checkMobile, { isLoading: checking }] = useCheckMobileMutation();
 
 	const dispatch = useDispatch();
 
@@ -43,6 +45,25 @@ const CreateRequest = ({ user }) => {
 			console.log(error);
 		}
 	};
+	const sendOTP = async () => {
+		try {
+			const result = await checkMobile({
+				userId: user._id,
+				mobile: formik.values.phone,
+			});
+			if (result?.data.success) {
+				await sendOtp.sendOtp(formik.values.phone, setConfirmation, toast);
+			} else {
+				toast.error(result.data.err_msg, {
+					position: "top-center",
+					theme: "colored",
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const verifyOtp = async () => {
 		try {
 			await sendOtp.verifyOtp(
@@ -52,11 +73,11 @@ const CreateRequest = ({ user }) => {
 				setInvalid,
 				setVerifyErr
 			);
-			setConfirmation(null);
 			await addMobile({
 				userId: user._id,
 				mobile: formik.values.phone,
 			});
+			setConfirmation(null);
 		} catch (error) {
 			console.log(error);
 		}
@@ -220,12 +241,15 @@ const CreateRequest = ({ user }) => {
 											? "hidden"
 											: "px-2 py-1 uppercase hover:bg-slate-500 duration-300 text-xs bg-gray-800 text-slate-200 -translate-y-1/2  rounded absolute top-1/2 right-2"
 									}`}
-									onClick={async () => {
-										await sendOtp.sendOtp(formik.values.phone, setConfirmation, toast);
-									}}
+									onClick={sendOTP}
 									type="button"
+									disabled={checking}
 								>
-									verify
+									{checking || addingMob ? (
+										<i className="fa-solid fa-spinner animate-spin"></i>
+									) : (
+										"send otp"
+									)}
 								</button>
 							</>
 						)}

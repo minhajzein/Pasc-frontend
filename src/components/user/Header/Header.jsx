@@ -52,7 +52,7 @@ function Header() {
 				>
 					<img
 						className="w-6 md:w-8 h-6 md:h-auto"
-						src="/src/assets/images/pasc_logo.png"
+						src="/public/images/pasc_logo.png"
 						alt="logo"
 					/>
 					<h1 className="text-xl md:text-2xl font-bold text-cyan-300">PASC</h1>
@@ -97,11 +97,7 @@ function Header() {
 							>
 								<img
 									className="w-full rounded-full"
-									src={
-										user.avatar !== null
-											? user.avatar
-											: "/src/assets/images/profile_dummy.jpg"
-									}
+									src={user.avatar !== null ? user.avatar : "/images/profile_dummy.jpg"}
 									alt="profile"
 								/>
 							</div>

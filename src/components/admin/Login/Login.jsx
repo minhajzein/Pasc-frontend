@@ -127,7 +127,7 @@ function Login() {
 						</form>
 					</div>
 				</div>
-				<div className="bg-[url('/src/assets/images/admin-login.jpg')] bg-cover bg-center rounded-2xl hidden lg:block"></div>
+				<div className="bg-[url('/images/admin-login.jpg')] bg-cover bg-center rounded-2xl hidden lg:block"></div>
 			</div>
 			<ToastContainer />
 		</div>

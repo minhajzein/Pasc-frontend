@@ -10,10 +10,12 @@ const initialState = newsAdapter.getInitialState()
 const newsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getNews: builder.query({
-            query: () => '/news',
-            validateStatus: (response, result) => {
-                return response.status === 200 && !result.isError
-            },
+            query: () => ({
+                url: '/news',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError
+                },
+            }),
             keepUnusedDataFor: 5,
             transformResponse: async (responseData, meta, args) => {
                 const loadedNews = await responseData.map(news => {

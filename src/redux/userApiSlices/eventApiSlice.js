@@ -11,10 +11,12 @@ const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
 
         getEvents: builder.query({
-            query: () => '/events',
-            validateStatus: (response, result) => {
-                return response.status === 200 && !result.isError
-            },
+            query: () => ({
+                url: '/events',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError
+                }
+            }),
             keepUnusedDataFor: 5,
             transformResponse: async (responseData, meta, args) => {
                 const loadedEvents = await responseData.map(event => {

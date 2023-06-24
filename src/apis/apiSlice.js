@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../redux/slices/authSlice'
 import { baseUrl } from '../config/config'
-import { setAdminCredentials } from '../redux/adminSlices/adminAuthSlice'
 
 
 const baseQuery = fetchBaseQuery({

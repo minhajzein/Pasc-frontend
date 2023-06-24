@@ -85,7 +85,7 @@ function UserLogin() {
 		<Loading />
 	) : (
 		<>
-			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/src/assets/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
+			<div className="hidden fixed h-screen -z-10 lg:block bg-[url('/images/cricket-stadium-vector.jpg')] bg-cover bg-center w-full"></div>
 			<div className="mt-10 p-2 sm:p-7 lg:mt-15 h-auto w-full flex flex-col lg:flex-row lg:justify-around items-center ">
 				<div className="shadow-md mt-4 lg:mt-10 rounded-xl w-full h-auto lg:w-[30%] bg-slate-300 p-2 sm:p-10 md:p-5 lg:p-3">
 					<h2 className="font-bold lg:text-2xl text-center">Log In</h2>
@@ -219,7 +219,7 @@ function UserLogin() {
 					<div className="w-full flex rounded-xl h-auto bg-teal-800/70 p-5 shadow-md  items-center justify-center flex-col">
 						<img
 							className="animate-bounce rounded-full w-1/4 shadow-md"
-							src="/src/assets/images/pasc_title.jpg"
+							src="/images/pasc_title.jpg"
 							alt=""
 						/>
 						<div className="flex flex-col">

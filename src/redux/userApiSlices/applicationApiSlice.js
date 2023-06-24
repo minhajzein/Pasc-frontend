@@ -7,7 +7,7 @@ const applicationApiSlice = apiSlice.injectEndpoints({
         addMobile: builder.mutation({
             query: (credentials) => ({
                 url: '/addMobile',
-                method: 'POST',
+                method: 'PATCH',
                 body: { ...credentials }
             })
         }),
@@ -15,6 +15,14 @@ const applicationApiSlice = apiSlice.injectEndpoints({
         createRequest: builder.mutation({
             query: (credentials) => ({
                 url: '/createRequest',
+                method: 'POST',
+                body: { ...credentials }
+            })
+        }),
+
+        checkMobile: builder.mutation({
+            query: (credentials) => ({
+                url: '/checkMobile',
                 method: 'POST',
                 body: { ...credentials }
             })
@@ -26,5 +34,6 @@ const applicationApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useAddMobileMutation,
-    useCreateRequestMutation
+    useCreateRequestMutation,
+    useCheckMobileMutation
 } = applicationApiSlice

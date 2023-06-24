@@ -10,10 +10,12 @@ const requestApiSlice = adminApiSlice.injectEndpoints({
     endpoints: (builder) => ({
 
         getAllRequests: builder.query({
-            query: () => '/requests',
-            validateStatus: (response, result) => {
-                return response.status === 200 && !result?.success
-            },
+            query: () => ({
+                url: '/requests',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result?.success
+                }
+            }),
             keepUnusedDataFor: 5,
             transformResponse: async (responseData, meta, args) => {
                 const loadedRequests = await responseData.map(request => {
