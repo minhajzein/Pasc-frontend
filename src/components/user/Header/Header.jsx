@@ -52,7 +52,7 @@ function Header() {
 				>
 					<img
 						className="w-6 md:w-8 h-6 md:h-auto"
-						src="/public/images/pasc_logo.png"
+						src="/images/pasc_logo.png"
 						alt="logo"
 					/>
 					<h1 className="text-xl md:text-2xl font-bold text-cyan-300">PASC</h1>
