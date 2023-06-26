@@ -1,10 +1,10 @@
 export const ROLES = {
-    User: 'User',
-    Member: 'Member',
-    Executive: 'Executive'
+    User: 'guest',
+    Member: 'member',
+    Executive: 'executive'
 }
 
-// export const baseUrl = 'http://localhost:3009'
+export const baseUrl = 'http://localhost:3009'
 
 
-export const baseUrl = 'https://api.pasc.site'
+// export const baseUrl = 'https://api.pasc.site'
