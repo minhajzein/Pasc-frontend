@@ -13,7 +13,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
         login: builder.mutation({
             query: credentials => ({
-                url: 'https://api.pasc.site/auth/login',
+                url: '/auth/login',
                 method: 'POST',
                 body: { ...credentials }
             }),
