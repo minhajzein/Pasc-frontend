@@ -4,7 +4,7 @@ import { baseUrl } from '../config/config'
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: baseUrl,
+    baseUrl: 'http://localhost:3009',
     credentials: 'include',
     timeout: 15000,
     prepareHeaders: (headers, { getState }) => {
