@@ -4,7 +4,7 @@ import { baseUrl } from '../config/config'
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'https://www.api.pasc.site',
+    baseUrl: '',
     credentials: 'include',
     timeout: 15000,
     prepareHeaders: (headers, { getState }) => {
