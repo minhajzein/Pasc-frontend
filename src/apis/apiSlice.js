@@ -6,7 +6,12 @@ import { baseUrl } from '../config/config'
 const baseQuery = fetchBaseQuery({
     baseUrl: baseUrl,
     credentials: 'include',
+    timeout: 15000,
     prepareHeaders: (headers, { getState }) => {
+        headers.set('Accept', 'application/json');
+        headers.set('Cache-Control', 'no-cache');
+        headers.set('Pragma', 'no-cache');
+        headers.set('Expires', '0');
         const token = getState().auth.token
         if (token) {
             headers.set("authorized", `Bearer ${token}`)

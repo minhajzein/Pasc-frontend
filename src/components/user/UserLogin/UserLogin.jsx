@@ -43,7 +43,6 @@ function UserLogin() {
 		}),
 		onSubmit: async values => {
 			try {
-				console.log(values);
 				const response = await login(values);
 				console.log(response);
 				if (response.data.success) {
