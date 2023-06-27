@@ -44,7 +44,6 @@ function UserLogin() {
 		onSubmit: async values => {
 			try {
 				const response = await login(values);
-				console.log(response);
 				if (response.data.success) {
 					dispatch(setCredentials({ accessToken: response.data.accessToken }));
 					dispatch(setUserdata(response.data.user));
