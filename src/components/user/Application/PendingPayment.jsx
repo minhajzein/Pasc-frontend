@@ -16,7 +16,7 @@ const PendingPayment = () => {
 				Dear, <span className="font-bold">{user.username}</span> you are eligible
 				for pasc membership, But you have to complete payment to get membership.
 				Membership fee is{" "}
-				<span className="font-bold">five hundred rupees (500.rs).</span> Please
+				<span className="font-bold">five hundred rupees (Rs.500).</span> Please
 				complete your payment.!
 			</p>
 			<div className="hover:scale-105 duration-300 mt-10">

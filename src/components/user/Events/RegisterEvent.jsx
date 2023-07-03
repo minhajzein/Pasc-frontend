@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectEventById } from "../../../redux/userApiSlices/eventApiSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegisterEvent = ({ eventId }) => {
 	const event = useSelector(state => selectEventById(state, eventId));
@@ -14,6 +15,13 @@ const RegisterEvent = ({ eventId }) => {
 		try {
 			if (user.type.includes("member")) {
 			} else {
+				toast.error(
+					"You don't have membership in club, please complete processes",
+					{
+						position: "top-center",
+						theme: "colored",
+					}
+				);
 				navigate("/membership");
 			}
 		} catch (error) {
