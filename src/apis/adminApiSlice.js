@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { setAdminCredentials } from "../redux/adminSlices/adminAuthSlice";
+import { baseUrl } from "../config/config";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:3009/admin',
+    baseUrl: baseUrl + '/admin',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const adminToken = getState().adminToken.adminToken

@@ -16,7 +16,7 @@ const RegisterEvent = ({ eventId }) => {
 			if (user.type.includes("member")) {
 			} else {
 				toast.error(
-					"You don't have membership in club, please complete processes",
+					"You don't have membership in Pasc, please complete processes",
 					{
 						position: "top-center",
 						theme: "colored",
