@@ -15,14 +15,6 @@ function Events() {
 		error,
 	} = useGetEventsQuery();
 
-	const [searchValue, setSearchValue] = useState("");
-
-	const search = async searchValue => {
-		try {
-		} catch (error) {
-			console.log(error);
-		}
-	};
 	let content;
 
 	if (isLoading) content = <Loading />;
