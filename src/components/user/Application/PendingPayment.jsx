@@ -21,7 +21,7 @@ const PendingPayment = () => {
 			</p>
 			<div className="hover:scale-105 duration-300 mt-10">
 				<GooglePayButton
-					environment="PRODUCTION"
+					environment="TEST"
 					buttonSizeMode="fill"
 					buttonType="pay"
 					paymentRequest={{
