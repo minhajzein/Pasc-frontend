@@ -8,7 +8,7 @@ function RequireAuth() {
 	return token !== null ? (
 		<Outlet />
 	) : (
-		<Navigate to="/login" state={{ from: location }} replace />
+		<Navigate to="/" state={{ from: location }} replace />
 	);
 }
 

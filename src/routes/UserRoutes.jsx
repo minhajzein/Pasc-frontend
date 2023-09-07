@@ -11,6 +11,7 @@ import RequireAuth from "../components/user/RequireAuth/RequireAuth";
 import { Outlet } from "react-router-dom";
 import Public from "../components/user/Public/Public";
 import ApplicationForm from "../pages/user/ApplicationForm";
+import Interactionpage from "../pages/user/Interactionpage";
 
 //⚡⚡⚡⚡imports⚡⚡⚡⚡
 
@@ -18,8 +19,9 @@ function UserRoutes() {
 	return (
 		<Routes>
 			<Route element={<Outlet />}>
-				{/*Public routes */}
+				<Route path="/" element={<Homepage />} />
 
+				{/*Public routes */}
 				<Route element={<Public />}>
 					<Route path="login" element={<Userlogin />} />
 					<Route path="signup" element={<Signupuser />} />
@@ -27,7 +29,6 @@ function UserRoutes() {
 				{/* Private routes */}
 
 				<Route element={<RequireAuth />}>
-					<Route path="/" element={<Homepage />} />
 					<Route path="events" element={<Eventpage />} />
 					<Route path="news" element={<Newspage />} />
 					<Route path="about" element={<Aboutpage />} />

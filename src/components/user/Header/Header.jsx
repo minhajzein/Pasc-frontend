@@ -130,7 +130,19 @@ function Header() {
 						</div>
 					</div>
 				) : (
-					<></>
+					<>
+						{location.pathname === "/login" ? (
+							<i
+								onClick={() => navigate("/")}
+								className="fa-solid fa-house  text-lg text-yellow-100 mr-5 cursor-pointer hover:scale-105 duration-300"
+							></i>
+						) : (
+							<i
+								onClick={() => navigate("/login")}
+								className="fa-solid fa-right-to-bracket text-lg text-yellow-100 mr-5 cursor-pointer hover:scale-105 duration-300"
+							></i>
+						)}
+					</>
 				)}
 			</div>
 			<div
