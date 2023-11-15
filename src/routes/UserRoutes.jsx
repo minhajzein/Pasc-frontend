@@ -11,7 +11,7 @@ import RequireAuth from "../components/user/RequireAuth/RequireAuth";
 import { Outlet } from "react-router-dom";
 import Public from "../components/user/Public/Public";
 import ApplicationForm from "../pages/user/ApplicationForm";
-import Interactionpage from "../pages/user/Interactionpage";
+import Termsconditions from "../pages/user/Termsconditions";
 
 //⚡⚡⚡⚡imports⚡⚡⚡⚡
 
@@ -20,12 +20,13 @@ function UserRoutes() {
 		<Routes>
 			<Route element={<Outlet />}>
 				<Route path="/" element={<Homepage />} />
-
+				<Route path="terms&conditions" element={<Termsconditions />} />
 				{/*Public routes */}
 				<Route element={<Public />}>
 					<Route path="login" element={<Userlogin />} />
 					<Route path="signup" element={<Signupuser />} />
 				</Route>
+
 				{/* Private routes */}
 
 				<Route element={<RequireAuth />}>

@@ -24,7 +24,7 @@ function News() {
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.5 }}
 				exit={{ opacity: 0 }}
-				className="w-full mt-24 md:mt-32  flex justify-center flex-row duration-300"
+				className="w-full mt-24 md:mt-32 flex justify-center flex-row duration-300"
 			>
 				<div className="w-[24.5%] fixed left-1 h-[70dvh] top-32 mt-2 rounded-lg hidden lg:block bg-white"></div>
 				<div className="lg:w-[50%] w-full p-1 duration-300">{newsContent}</div>
