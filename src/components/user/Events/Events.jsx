@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Loading from "../Loading/Loading";
 import { useGetEventsQuery } from "../../../redux/userApiSlices/eventApiSlice";
 import { motion as m } from "framer-motion";

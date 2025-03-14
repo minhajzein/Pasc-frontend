@@ -1,125 +1,128 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import Loading from "../Loading/Loading";
-import { useAdminLoginMutation } from "../../../redux/adminApiSlices/adminAuthApiSlice";
-import { ToastContainer, toast } from "react-toastify";
-import { setAdminCredentials } from "../../../redux/adminSlices/adminAuthSlice";
-import useAdminPersist from "../../../hooks/useAdminPersist";
+import { useState } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import Loading from '../Loading/Loading'
+import { useAdminLoginMutation } from '../../../redux/adminApiSlices/adminAuthApiSlice'
+import { ToastContainer, toast } from 'react-toastify'
+import { setAdminCredentials } from '../../../redux/adminSlices/adminAuthSlice'
+import useAdminPersist from '../../../hooks/useAdminPersist'
 
 function Login() {
-	const [password, setPassword] = useState(true);
-	const [adminLogin, { isLoading, isError }] = useAdminLoginMutation();
+	const [password, setPassword] = useState(true)
+	const [adminLogin, { isLoading, isError }] = useAdminLoginMutation()
 
-	const [adminPersist, setAdminPersist] = useAdminPersist();
-	const handleToggle = () => setAdminPersist(prev => !prev);
+	const [adminPersist, setAdminPersist] = useAdminPersist()
+	const handleToggle = () => setAdminPersist(prev => !prev)
 
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
 
 	const formik = useFormik({
 		initialValues: {
-			email: "",
-			password: "",
+			email: '',
+			password: '',
 		},
 		validationSchema: Yup.object({
 			email: Yup.string()
-				.matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email not valid")
-				.email("Invalid email address")
-				.required("email is required"),
-			password: Yup.string().required("password is required"),
+				.matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'email not valid')
+				.email('Invalid email address')
+				.required('email is required'),
+			password: Yup.string().required('password is required'),
 		}),
 		onSubmit: async values => {
 			try {
-				const { data } = await adminLogin(values);
+				const { data } = await adminLogin(values)
 				if (data?.success) {
-					dispatch(setAdminCredentials(data.adminToken));
-					navigate("/admin");
+					dispatch(setAdminCredentials(data.adminToken))
+					navigate('/admin')
 				} else {
 					toast.error(data?.message, {
-						position: "top-center",
-						theme: "colored",
-					});
+						position: 'top-center',
+						theme: 'colored',
+					})
 				}
 			} catch (error) {
-				console.log(error);
+				console.log(error)
 			}
 		},
-	});
+	})
 	return isLoading ? (
 		<Loading />
 	) : (
 		<div className="h-screen w-full flex justify-center items-center bg-[url('/src/assets/images/admin-login.jpg')] lg:bg-none">
-			<div className="bg-blue-200 w-[90%] md:w-[50%] h-auto rounded-3xl md:grid md:grid-cols-1 lg:grid-cols-2 p-3 gap-4">
-				<div className="flex items-center justify-center flex-col p-3">
-					<h1 className="uppercase font-bold text-xl text-center">
+			<div className='bg-blue-200 w-[90%] md:w-[50%] h-auto rounded-3xl md:grid md:grid-cols-1 lg:grid-cols-2 p-3 gap-4'>
+				<div className='flex items-center justify-center flex-col p-3'>
+					<h1 className='uppercase font-bold text-xl text-center'>
 						pasc admin login
 					</h1>
-					<div className="pt-5 w-full">
-						<form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
-							<div className="w-full">
+					<div className='pt-5 w-full'>
+						<form
+							className='flex flex-col gap-4'
+							onSubmit={formik.handleSubmit}
+						>
+							<div className='w-full'>
 								<label
 									className={`block ml-3 text-xs sm:text-sm ${
-										formik.errors.email ? "text-red-500 animate-pulse" : ""
+										formik.errors.email ? 'text-red-500 animate-pulse' : ''
 									}`}
-									htmlFor="email"
+									htmlFor='email'
 								>
-									{formik.errors.email ? formik.errors.email : "email"}
+									{formik.errors.email ? formik.errors.email : 'email'}
 								</label>
 								<input
-									className="w-full shadow-md rounded-xl focus:border-lime-600"
-									type="text"
-									name="email"
+									className='w-full shadow-md rounded-xl focus:border-lime-600'
+									type='text'
+									name='email'
 									value={formik.values.email}
 									onChange={formik.handleChange}
 								/>
 							</div>
-							<div className="w-full">
+							<div className='w-full'>
 								<label
 									className={`block ml-3 text-xs sm:text-sm ${
-										formik.errors.password ? "text-red-500 animate-pulse" : ""
+										formik.errors.password ? 'text-red-500 animate-pulse' : ''
 									}`}
-									htmlFor="password"
+									htmlFor='password'
 								>
-									{formik.errors.password ? formik.errors.password : "Password"}
+									{formik.errors.password ? formik.errors.password : 'Password'}
 								</label>
-								<div className="w-full relative">
+								<div className='w-full relative'>
 									<input
-										className="w-full shadow-md rounded-xl focus:border-lime-600"
-										type={password ? "password" : "text"}
-										autoComplete="true"
+										className='w-full shadow-md rounded-xl focus:border-lime-600'
+										type={password ? 'password' : 'text'}
+										autoComplete='true'
 										value={formik.values.password}
-										name="password"
+										name='password'
 										onChange={formik.handleChange}
 									/>
 									<i
 										onClick={() => setPassword(!password)}
 										className={
 											password
-												? "fa-solid fa-eye absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 cursor-pointer"
-												: "fa-sharp fa-solid fa-eye-slash absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 cursor-pointer"
+												? 'fa-solid fa-eye absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 cursor-pointer'
+												: 'fa-sharp fa-solid fa-eye-slash absolute top-1/2 right-3 -translate-y-1/2 text-gray-600 cursor-pointer'
 										}
 									></i>
 								</div>
 							</div>
-							<div className="flex flex-row justify-between border-blue-500 rounded-md items-center border p-1 px-4">
+							<div className='flex flex-row justify-between border-blue-500 rounded-md items-center border p-1 px-4'>
 								<input
-									className="bg-cyan-200 rounded-md border-blue-700 border-2"
-									type="checkbox"
-									id="persist"
+									className='bg-cyan-200 rounded-md border-blue-700 border-2'
+									type='checkbox'
+									id='persist'
 									checked={adminPersist}
 									onChange={handleToggle}
 								/>
-								<label className="ml-4 lg:text-sm text-xs" htmlFor="persist">
+								<label className='ml-4 lg:text-sm text-xs' htmlFor='persist'>
 									Trust this device
 								</label>
 							</div>
-							<div className="w-full pt-4">
+							<div className='w-full pt-4'>
 								<button
-									className="bg-lime-600 p-2 shadow-md rounded-xl hover:scale-105 duration-300 w-full"
-									type="submit"
+									className='bg-lime-600 p-2 shadow-md rounded-xl hover:scale-105 duration-300 w-full'
+									type='submit'
 								>
 									LOGIN
 								</button>
@@ -131,7 +134,7 @@ function Login() {
 			</div>
 			<ToastContainer />
 		</div>
-	);
+	)
 }
 
-export default Login;
+export default Login

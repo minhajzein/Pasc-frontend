@@ -24,7 +24,6 @@ const adminNewsApiSlice = adminApiSlice.injectEndpoints({
                     return news
                 })
                 return newsAdapter.setAll(initialState, loadedNews)
-
             },
             providesTags: (result, error, arg) => {
                 if (result?.ids) {

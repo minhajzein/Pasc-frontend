@@ -4,9 +4,6 @@ import { logout, setCredentials } from "../slices/authSlice";
 
 
 
-
-
-
 export const authApiSlice = apiSlice.injectEndpoints({
 
     endpoints: (builder) => ({

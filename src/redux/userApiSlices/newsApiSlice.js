@@ -40,8 +40,8 @@ const newsApiSlice = apiSlice.injectEndpoints({
 
 
 export const {
-    useGetNewsQuery
-    , usePrefetch
+    useGetNewsQuery,
+    usePrefetch
 } = newsApiSlice
 
 

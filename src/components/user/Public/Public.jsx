@@ -1,16 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 function Public() {
-	const token = useSelector(state => state.auth.token);
-	const location = useLocation();
+	const token = useSelector(state => state.auth.token)
+	const location = useLocation()
 
 	return token !== null ? (
-		<Navigate to="/" state={{ from: location }} replace />
+		<Navigate to='/' state={{ from: location }} replace />
 	) : (
 		<Outlet />
-	);
+	)
 }
 
-export default Public;
+export default Public

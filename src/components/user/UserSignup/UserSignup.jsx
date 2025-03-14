@@ -89,7 +89,6 @@ function UserSignup() {
 				}
 			} catch (error) {
 				console.log(error);
-				console.log("error from on submit");
 			}
 		},
 	});

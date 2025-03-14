@@ -24,7 +24,6 @@ const eventApiSlice = apiSlice.injectEndpoints({
                     return event
                 })
                 return eventsAdapter.setAll(initialState, loadedEvents)
-
             },
             providesTags: (result, error, arg) => {
                 if (result?.ids) {

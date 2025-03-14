@@ -20,7 +20,7 @@ function UserRoutes() {
 		<Routes>
 			<Route element={<Outlet />}>
 				<Route path="/" element={<Homepage />} />
-				<Route path="terms&conditions" element={<Termsconditions />} />
+				<Route path="/terms&conditions" element={<Termsconditions />} />
 				{/*Public routes */}
 				<Route element={<Public />}>
 					<Route path="login" element={<Userlogin />} />
